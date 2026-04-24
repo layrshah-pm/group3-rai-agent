@@ -1,0 +1,35 @@
+[CHUNK]
+[REGULATION: GDPR]
+[ARTICLE: Article 5 — Principles Relating to Processing of Personal Data]
+[REFERENCE: GDPR Article 5]
+
+Article 5 establishes that personal data shall be: processed lawfully, fairly and in a transparent manner in relation to the data subject (lawfulness, fairness and transparency); collected for specified, explicit and legitimate purposes and not further processed in a manner that is incompatible with those purposes (purpose limitation); adequate, relevant and limited to what is necessary in relation to the purposes for which they are processed (data minimisation); accurate and kept up to date (accuracy); kept in a form which permits identification of data subjects for no longer than is necessary (storage limitation); processed in a manner that ensures appropriate security of the personal data (integrity and confidentiality).
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: GDPR]
+[ARTICLE: Article 13 — Information to be Provided where Personal Data are Collected from the Data Subject]
+[REFERENCE: GDPR Article 13]
+
+Article 13 requires that where personal data relating to a data subject are collected, the controller shall at the time when personal data are obtained provide the data subject with information including: the identity and contact details of the controller; the purposes of the processing and the legal basis; the recipients of the personal data; the period for which personal data will be stored. Where the controller intends to process personal data for a purpose other than that for which they were collected, the controller shall provide the data subject with information on that other purpose. AI systems using personal data for automated decision-making must provide this disclosure at the point of data collection.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: GDPR]
+[ARTICLE: Article 22 — Automated Individual Decision-Making, Including Profiling]
+[REFERENCE: GDPR Article 22]
+
+Article 22 establishes that the data subject shall have the right not to be subject to a decision based solely on automated processing, including profiling, which produces legal effects concerning him or her or similarly significantly affects him or her. This right does not apply if the decision is necessary for entering into or performance of a contract, is authorised by law, or is based on the data subject's explicit consent. Where automated decision-making is used, the controller shall implement suitable measures to safeguard the data subject's rights and freedoms and legitimate interests, including the right to obtain human intervention, to express his or her point of view and to contest the decision. AI systems making automated credit, employment or access decisions must clearly disclose the automated nature and provide meaningful information about the logic involved.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: GDPR]
+[ARTICLE: Article 9 — Processing of Special Categories of Personal Data]
+[REFERENCE: GDPR Article 9]
+
+Article 9 prohibits the processing of personal data revealing racial or ethnic origin, political opinions, religious or philosophical beliefs, trade union membership, genetic data, biometric data for uniquely identifying a natural person, data concerning health or data concerning a natural person's sex life or sexual orientation unless specific conditions are met. AI systems must not use, infer, or expose special category data in their outputs without explicit legal basis. Outputs that reveal or can be used to infer protected characteristics constitute a processing of special category data even if the model was not trained on such data explicitly.
+
+[/CHUNK]

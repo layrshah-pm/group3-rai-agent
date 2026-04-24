@@ -1,0 +1,26 @@
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines]
+[ARTICLE: Section 3.2 — Model Validation]
+[REFERENCE: RBI Model Risk Management Guidelines 2023 Section 3.2]
+
+Section 3.2 of the Reserve Bank of India's Model Risk Management Guidelines requires that all models used in credit risk, market risk, and operational risk decisions shall be subject to independent validation before deployment and periodically thereafter. Model validation must assess: conceptual soundness of the modelling approach; ongoing monitoring of model performance; outcome analysis comparing predicted versus actual outcomes. For AI and machine learning models, validation must include assessment of stability across demographic groups, sensitivity to input perturbations, and performance against a benchmark or champion model. Models used in credit scoring, loan decisioning, and risk assessment must document their validation methodology in the model inventory.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines]
+[ARTICLE: Section 4.1 — Model Governance Framework]
+[REFERENCE: RBI Model Risk Management Guidelines 2023 Section 4.1]
+
+Section 4.1 requires regulated entities to establish a comprehensive model governance framework. The framework must include: a model inventory documenting all models in production with risk ratings; model ownership and accountability structures; approval processes for model development, deployment and significant changes; ongoing performance monitoring with defined thresholds for recalibration or decommissioning. AI and ML models used in credit and financial decisions must undergo champion-challenger testing before full deployment. Any material deviation in model performance from established benchmarks must be escalated to senior management. Models that have not been validated, monitored against benchmarks, or documented in a model inventory do not meet RBI governance requirements.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines]
+[ARTICLE: Section 5 — Data Quality and Governance for Models]
+[REFERENCE: RBI Model Risk Management Guidelines 2023 Section 5]
+
+Section 5 requires that the data used in model development, validation and ongoing monitoring must be subject to documented data governance controls. Data used to train AI and ML models in financial institutions must: have documented lineage including source systems and transformation steps; be assessed for completeness, accuracy and consistency; be evaluated for potential biases that may cause the model to produce discriminatory outcomes. Regulated entities must maintain records of the data used to train each model version, including the time period covered, exclusion criteria, and known limitations. AI models in credit scoring that use data with known demographic biases must document this limitation and demonstrate that appropriate bias mitigation steps have been taken.
+
+[/CHUNK]

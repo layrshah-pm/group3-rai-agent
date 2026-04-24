@@ -1,0 +1,62 @@
+[CHUNK]
+[REGULATION: NIST AI RMF]
+[ARTICLE: GOVERN 1.1 — Policies and Processes for AI Risk]
+[REFERENCE: NIST AI RMF GOVERN 1.1]
+
+GOVERN 1.1: Policies, processes, procedures, and practices across the organisation related to the mapping, measuring, and managing of AI risks are in place, transparent, and implemented effectively. Organisational policies for responsible AI should document who is accountable for AI decisions, what approval process exists for deploying AI systems, how violations are escalated, and what the review cycle for AI policies is. AI-generated outputs in regulated domains must be traceable to a responsible organisational party.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: NIST AI RMF]
+[ARTICLE: GOVERN 6.1 — Policies for Accountability]
+[REFERENCE: NIST AI RMF GOVERN 6.1]
+
+GOVERN 6.1: Policies and procedures are in place to assess and manage risk in AI systems from third-party providers and within the supply chain. Accountability structures for AI decisions must clearly identify the responsible party. For each AI-generated output that significantly affects individuals, the organisation deploying the AI system must be identifiable, named, and reachable. Accountability gaps occur when AI outputs reference no responsible party, making corrective action or appeal impossible.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: NIST AI RMF]
+[ARTICLE: MAP 3.5 — Data Provenance and Limitations]
+[REFERENCE: NIST AI RMF MAP 3.5]
+
+MAP 3.5: Practices and personnel for supporting AI risk identification processes are in place. Data provenance and lineage are documented. AI systems must identify and disclose the sources of data used to train and validate models, acknowledge known limitations in training data, and communicate how those limitations may affect the reliability of outputs. Outputs from AI systems that make decisions based on incomplete, biased or temporally limited datasets must acknowledge these limitations to users and affected individuals.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: NIST AI RMF]
+[ARTICLE: MEASURE 2.2 — Non-Discrimination and Fairness Metrics]
+[REFERENCE: NIST AI RMF MEASURE 2.2]
+
+MEASURE 2.2: Scientific and statistical methods are applied for AI risk measurement. Non-discrimination in AI outputs requires measuring and reporting group fairness metrics across protected characteristics. Disparate impact analysis, demographic parity, and equalized odds are standard quantitative measures. Outputs from AI systems used in consequential decisions must not demonstrate statistically significant disparate impact across groups defined by race, gender, age, religion, disability or other protected characteristics. The 4/5ths (80%) rule for adverse impact is the established legal threshold in employment and credit contexts.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: NIST AI RMF]
+[ARTICLE: MEASURE 2.5 — Explainability]
+[REFERENCE: NIST AI RMF MEASURE 2.5]
+
+MEASURE 2.5: The risk or impact of the AI system to individuals, groups, communities, organisations, and society is evaluated and documented. AI systems making consequential decisions must provide explanations that are meaningful and accessible to affected individuals. Explanations should identify which input features most significantly influenced the outcome. For credit, employment, or criminal justice decisions, individuals must receive an explanation of the specific factors and their relative importance. Technical explainability methods include SHAP (SHapley Additive exPlanations), LIME, and integrated gradients.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: NIST AI RMF]
+[ARTICLE: MEASURE 2.6 — Uncertainty and Confidence]
+[REFERENCE: NIST AI RMF MEASURE 2.6]
+
+MEASURE 2.6: The risk or impact of the AI system to individuals is evaluated considering epistemic and aleatoric uncertainty. AI systems must communicate appropriate uncertainty or confidence levels with their outputs. Where a model produces a prediction with low confidence or high uncertainty, this must be disclosed to the user or affected individual. Confidence scores, probability estimates, or qualitative uncertainty indicators must accompany AI-generated decisions in high-stakes domains. Presenting AI outputs as certain when the model has high uncertainty constitutes a transparency failure.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: NIST AI RMF]
+[ARTICLE: MANAGE 1.3 — Human Oversight and Review]
+[REFERENCE: NIST AI RMF MANAGE 1.3]
+
+MANAGE 1.3: Responses to identified risks are prioritised and implemented based on projected impact. Human oversight mechanisms are a primary risk management control for high-risk AI systems. AI systems in consequential domains must provide a mechanism for human review, appeal, or override of automated decisions. The absence of a human review pathway is a significant governance gap. AI outputs that affect individuals' access to credit, employment, education, healthcare, or justice must inform affected individuals of their right to request human intervention.
+
+[/CHUNK]

@@ -1,0 +1,35 @@
+[CHUNK]
+[REGULATION: India DPDPA 2023]
+[ARTICLE: Section 4 — Grounds for Processing Personal Data]
+[REFERENCE: India DPDPA 2023 Section 4]
+
+Section 4 of the Digital Personal Data Protection Act 2023 establishes that a Data Fiduciary may process the personal data of a Data Principal only in accordance with the provisions of this Act. Personal data may be processed only for a lawful purpose for which the Data Principal has given consent, or for certain legitimate uses specified under the Act. A Data Fiduciary must provide clear notice to the Data Principal about the personal data to be collected, the purpose of processing, and the manner in which consent may be withdrawn. AI systems that process personal data of Indian residents must establish a lawful purpose and obtain consent before processing.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: India DPDPA 2023]
+[ARTICLE: Section 6 — Notice and Consent]
+[REFERENCE: India DPDPA 2023 Section 6]
+
+Section 6 requires that every request for consent for processing personal data shall be accompanied or preceded by a notice by the Data Fiduciary to the Data Principal. The notice shall contain: a description of the personal data sought to be collected; the purpose of processing such personal data; the manner in which the Data Principal may exercise their rights; the manner in which the Data Principal may make a complaint. Consent must be free, specific, informed, unconditional and unambiguous with a clear affirmative action. AI systems must not process personal data beyond the scope of collected consent. Automated decisions based on personal data must be disclosed as such.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: India DPDPA 2023]
+[ARTICLE: Section 8 — Obligations of Data Fiduciary]
+[REFERENCE: India DPDPA 2023 Section 8]
+
+Section 8(3) requires that a Data Fiduciary shall ensure that the personal data processed is complete, accurate and consistent, to the extent necessary for the specified purpose. The Data Fiduciary shall not retain personal data beyond the period necessary for the specified purpose. Section 8(7) prohibits processing personal data that is not necessary for the specified purpose — this is the data minimisation obligation. AI systems must not collect or process personal data in excess of what is necessary for the stated decision-making purpose. Excess data collection or retention beyond the purpose constitutes a violation of data minimisation obligations under DPDPA.
+
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: India DPDPA 2023]
+[ARTICLE: Section 11 — Right to Information about Personal Data]
+[REFERENCE: India DPDPA 2023 Section 11]
+
+Section 11 provides that a Data Principal shall have the right to obtain from the Data Fiduciary: confirmation of whether personal data is being processed; a summary of the personal data being processed; the identities of other Data Fiduciaries and processors with whom personal data has been shared. Where an AI system makes an automated decision affecting an Indian data principal, the data principal has the right to request information about what personal data was used in that decision and how it was processed. AI systems making consequential automated decisions must maintain records sufficient to respond to such information requests.
+
+[/CHUNK]
