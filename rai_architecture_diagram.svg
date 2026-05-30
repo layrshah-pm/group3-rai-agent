@@ -1,0 +1,509 @@
+<svg viewBox="0 0 1400 980" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f1117;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#1a1d2e;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="uiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a5f;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#0d2137;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="graphGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e2d1e;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#0d1f0d;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="ragGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d1e3a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#1a0d2e;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad_ingest" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad_pii" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#b45309"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad_bias" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#047857"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad_xai" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad_policy" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#b91c1c"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad_score" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#0e7490"/>
+    </linearGradient>
+    <linearGradient id="ollamaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316"/>
+      <stop offset="100%" style="stop-color:#c2410c"/>
+    </linearGradient>
+    <linearGradient id="dbGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e"/>
+      <stop offset="100%" style="stop-color:#15803d"/>
+    </linearGradient>
+    <linearGradient id="chromaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7"/>
+      <stop offset="100%" style="stop-color:#7e22ce"/>
+    </linearGradient>
+
+    <!-- Glow filters -->
+    <filter id="glow_blue" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glow_red" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#ef4444" flood-opacity="0.4" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="shadow"/>
+      <feComposite in="SourceGraphic" in2="shadow" operator="over"/>
+    </filter>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="textShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.8"/>
+    </filter>
+
+    <!-- Arrow markers -->
+    <marker id="arrow_white" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.5)"/>
+    </marker>
+    <marker id="arrow_blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#60a5fa"/>
+    </marker>
+    <marker id="arrow_orange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#fb923c"/>
+    </marker>
+    <marker id="arrow_purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#c084fc"/>
+    </marker>
+    <marker id="arrow_green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4ade80"/>
+    </marker>
+    <marker id="arrow_red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f87171"/>
+    </marker>
+    <marker id="arrow_cyan" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#22d3ee"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="980" fill="url(#bgGrad)"/>
+
+  <!-- Subtle grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  </pattern>
+  <rect width="1400" height="980" fill="url(#grid)"/>
+
+  <!-- ══════════════════ TITLE AREA ══════════════════ -->
+  <text x="700" y="38" text-anchor="middle" font-size="22" font-weight="700" fill="white" filter="url(#textShadow)">RAI Compliance Agent</text>
+  <text x="700" y="60" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.5)">System Architecture · IIMA Capstone · EPAIBBL01 · Group 3</text>
+
+  <!-- ══════════════════ STREAMLIT UI PANEL ══════════════════ -->
+  <rect x="20" y="80" width="280" height="240" rx="12" fill="url(#uiGrad)" stroke="#3b82f6" stroke-width="1.5" filter="url(#softShadow)"/>
+  <rect x="20" y="80" width="280" height="36" rx="12" fill="#1e3a5f"/>
+  <rect x="20" y="104" width="280" height="12" fill="#1e3a5f"/>
+  <text x="160" y="103" text-anchor="middle" font-size="11" font-weight="700" fill="#93c5fd" letter-spacing="1">STREAMLIT WEB INTERFACE</text>
+  <text x="160" y="118" text-anchor="middle" font-size="9" fill="rgba(147,197,253,0.6)">ui/app.py  ·  1400+ lines</text>
+
+  <!-- UI Components -->
+  <rect x="36" y="128" width="116" height="30" rx="6" fill="rgba(59,130,246,0.2)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+  <text x="94" y="147" text-anchor="middle" font-size="9" fill="#93c5fd">📄 File Upload</text>
+  <text x="94" y="157" text-anchor="middle" font-size="8" fill="rgba(147,197,253,0.5)">PDF / Docx / TXT</text>
+
+  <rect x="164" y="128" width="116" height="30" rx="6" fill="rgba(59,130,246,0.2)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+  <text x="222" y="147" text-anchor="middle" font-size="9" fill="#93c5fd">📝 Text Paste</text>
+  <text x="222" y="157" text-anchor="middle" font-size="8" fill="rgba(147,197,253,0.5)">Raw Policy Input</text>
+
+  <rect x="36" y="170" width="116" height="30" rx="6" fill="rgba(59,130,246,0.2)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+  <text x="94" y="189" text-anchor="middle" font-size="9" fill="#93c5fd">📊 CSV Upload</text>
+  <text x="94" y="199" text-anchor="middle" font-size="8" fill="rgba(147,197,253,0.5)">Model Predictions</text>
+
+  <rect x="164" y="170" width="116" height="30" rx="6" fill="rgba(59,130,246,0.2)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+  <text x="222" y="189" text-anchor="middle" font-size="9" fill="#93c5fd">🎯 Radar Chart</text>
+  <text x="222" y="199" text-anchor="middle" font-size="8" fill="rgba(147,197,253,0.5)">Plotly Viz</text>
+
+  <!-- Suggest button with warning badge -->
+  <rect x="36" y="212" width="244" height="34" rx="6" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.5)" stroke-width="1.5"/>
+  <text x="158" y="231" text-anchor="middle" font-size="9" fill="#fca5a5">⚡ Suggest Improvements Button</text>
+  <text x="158" y="242" text-anchor="middle" font-size="8" fill="rgba(252,165,165,0.6)">Bypasses LangGraph! ⚠ F-04</text>
+
+  <!-- File Parser -->
+  <rect x="36" y="258" width="244" height="24" rx="5" fill="rgba(107,114,128,0.2)" stroke="rgba(107,114,128,0.4)" stroke-width="1"/>
+  <text x="158" y="274" text-anchor="middle" font-size="9" fill="#d1d5db">🔧 utils/file_parser.py  ·  ⚠ No path sanitization (F-06)</text>
+
+  <!-- ══════════════════ LANGGRAPH ORCHESTRATOR ══════════════════ -->
+  <rect x="330" y="80" width="700" height="420" rx="12" fill="url(#graphGrad)" stroke="#22c55e" stroke-width="1.5" filter="url(#softShadow)"/>
+  <rect x="330" y="80" width="700" height="36" rx="12" fill="#1e2d1e"/>
+  <rect x="330" y="104" width="700" height="12" fill="#1e2d1e"/>
+  <text x="680" y="103" text-anchor="middle" font-size="11" font-weight="700" fill="#86efac" letter-spacing="1">LANGGRAPH ORCHESTRATION GRAPH</text>
+  <text x="680" y="118" text-anchor="middle" font-size="9" fill="rgba(134,239,172,0.6)">graph.py  ·  6-node linear pipeline  ·  ComplianceState (state.py)</text>
+
+  <!-- State badge -->
+  <rect x="540" y="126" width="280" height="26" rx="6" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+  <text x="680" y="143" text-anchor="middle" font-size="9" fill="#86efac">🗄 ComplianceState  ·  msgpack checkpoint  ·  operator.add reducers ⚠ F-05</text>
+
+  <!-- Node dimensions: 96w x 80h, centers at y=220 -->
+  <!-- Node 1: Ingestion -->
+  <rect x="348" y="168" width="96" height="80" rx="8" fill="url(#nodeGrad_ingest)" filter="url(#softShadow)"/>
+  <text x="396" y="188" text-anchor="middle" font-size="16">📥</text>
+  <text x="396" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="white">Ingestion</text>
+  <text x="396" y="217" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">nodes/ingestion.py</text>
+  <text x="396" y="229" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">Normalize + validate</text>
+  <text x="396" y="241" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">INPUT_RECEIVED</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="444" y1="208" x2="468" y2="208" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow_blue)"/>
+
+  <!-- Node 2: PII -->
+  <rect x="469" y="168" width="96" height="80" rx="8" fill="url(#nodeGrad_pii)" filter="url(#softShadow)"/>
+  <text x="517" y="188" text-anchor="middle" font-size="16">🔒</text>
+  <text x="517" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="white">PII Agent</text>
+  <text x="517" y="217" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">nodes/pii_agent.py</text>
+  <text x="517" y="229" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">Presidio · 0.75 conf</text>
+  <text x="517" y="241" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">7 entity types</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="565" y1="208" x2="589" y2="208" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow_blue)"/>
+
+  <!-- Node 3: Bias -->
+  <rect x="590" y="168" width="96" height="80" rx="8" fill="url(#nodeGrad_bias)" filter="url(#softShadow)"/>
+  <text x="638" y="188" text-anchor="middle" font-size="16">⚖️</text>
+  <text x="638" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="white">Bias Agent</text>
+  <text x="638" y="217" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">nodes/bias_agent.py</text>
+  <text x="638" y="229" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">Fairlearn metrics</text>
+  <text x="638" y="241" text-anchor="middle" font-size="7" fill="#fca5a5">⚠ DI formula inverted</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="686" y1="208" x2="710" y2="208" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow_blue)"/>
+
+  <!-- Node 4: XAI -->
+  <rect x="711" y="168" width="96" height="80" rx="8" fill="url(#nodeGrad_xai)" filter="url(#softShadow)"/>
+  <text x="759" y="188" text-anchor="middle" font-size="16">🔍</text>
+  <text x="759" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="white">XAI Agent</text>
+  <text x="759" y="217" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">nodes/explainability</text>
+  <text x="759" y="229" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">SHAP Tree/Kernel</text>
+  <text x="759" y="241" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">Top 5 features</text>
+
+  <!-- Arrow 4→5 -->
+  <line x1="807" y1="208" x2="831" y2="208" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow_blue)"/>
+
+  <!-- Node 5: Policy -->
+  <rect x="832" y="168" width="96" height="80" rx="8" fill="url(#nodeGrad_policy)" filter="url(#softShadow)"/>
+  <text x="880" y="188" text-anchor="middle" font-size="16">📋</text>
+  <text x="880" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="white">Policy Agent</text>
+  <text x="880" y="217" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">nodes/policy_agent.py</text>
+  <text x="880" y="229" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">11 RAI criteria</text>
+  <text x="880" y="241" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">Pydantic + Ollama</text>
+
+  <!-- Arrow 5→6 -->
+  <line x1="928" y1="208" x2="952" y2="208" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow_blue)"/>
+
+  <!-- Node 6: Scorecard -->
+  <rect x="953" y="168" width="96" height="80" rx="8" fill="url(#nodeGrad_score)" filter="url(#softShadow)"/>
+  <text x="1001" y="188" text-anchor="middle" font-size="16">🏆</text>
+  <text x="1001" y="205" text-anchor="middle" font-size="9" font-weight="700" fill="white">Scorecard</text>
+  <text x="1001" y="217" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.7)">nodes/scorecard.py</text>
+  <text x="1001" y="229" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">5 RAI pillars</text>
+  <text x="1001" y="241" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">PASS / FAIL verdict</text>
+
+  <!-- Missing correction node (dashed, ghosted) -->
+  <rect x="348" y="275" width="701" height="50" rx="6" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.4)" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="698" y="297" text-anchor="middle" font-size="10" fill="rgba(252,165,165,0.8)" font-style="italic">🚫  correction_node  —  MISSING FROM RUNTIME GRAPH  [F-01 · CRITICAL]</text>
+  <text x="698" y="313" text-anchor="middle" font-size="9" fill="rgba(252,165,165,0.5)">nodes/correction.py not compiled into graph.py · documented but disconnected</text>
+
+  <!-- Parallel execution suggestion -->
+  <rect x="348" y="340" width="701" height="44" rx="6" fill="rgba(250,204,21,0.05)" stroke="rgba(250,204,21,0.25)" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="698" y="360" text-anchor="middle" font-size="9" fill="rgba(253,224,71,0.7)" font-style="italic">💡 Optimization opportunity: PII · Bias · XAI could run in parallel (fan-out from Ingestion)</text>
+  <text x="698" y="375" text-anchor="middle" font-size="9" fill="rgba(253,224,71,0.5)">Currently sequential — no cross-dependencies between these three nodes</text>
+
+  <!-- Audit trail row -->
+  <rect x="348" y="398" width="701" height="30" rx="6" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.2)" stroke-width="1"/>
+  <text x="698" y="417" text-anchor="middle" font-size="9" fill="#86efac">🗃  Each node writes to SQLite  ·  audit_log  ·  step_trace  ·  rai_audit.db  (tamper-proof checkpoint)</text>
+  <text x="698" y="428" text-anchor="middle" font-size="8" fill="rgba(134,239,172,0.5)">⚠ Suggestion Agent bypasses this trail entirely — suggestions never logged [F-04]</text>
+
+  <!-- Pillar score legend -->
+  <text x="348" y="458" font-size="8" fill="rgba(255,255,255,0.4)">PILLARS →</text>
+  <rect x="408" y="447" width="88" height="18" rx="3" fill="rgba(59,130,246,0.2)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+  <text x="452" y="459" text-anchor="middle" font-size="8" fill="#93c5fd">Transparency</text>
+  <rect x="504" y="447" width="88" height="18" rx="3" fill="rgba(16,185,129,0.2)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+  <text x="548" y="459" text-anchor="middle" font-size="8" fill="#6ee7b7">Fairness</text>
+  <rect x="600" y="447" width="88" height="18" rx="3" fill="rgba(139,92,246,0.2)" stroke="rgba(139,92,246,0.3)" stroke-width="1"/>
+  <text x="644" y="459" text-anchor="middle" font-size="8" fill="#c4b5fd">Accountability</text>
+  <rect x="696" y="447" width="88" height="18" rx="3" fill="rgba(239,68,68,0.2)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+  <text x="740" y="459" text-anchor="middle" font-size="8" fill="#fca5a5">Privacy</text>
+  <rect x="792" y="447" width="100" height="18" rx="3" fill="rgba(6,182,212,0.2)" stroke="rgba(6,182,212,0.3)" stroke-width="1"/>
+  <text x="842" y="459" text-anchor="middle" font-size="8" fill="#67e8f9">Human Oversight</text>
+
+  <!-- ══════════════════ OLLAMA LLM ══════════════════ -->
+  <rect x="1060" y="80" width="310" height="130" rx="12" fill="#1f1208" stroke="#fb923c" stroke-width="1.5" filter="url(#softShadow)"/>
+  <rect x="1060" y="80" width="310" height="36" rx="12" fill="#2d1a06"/>
+  <rect x="1060" y="104" width="310" height="12" fill="#2d1a06"/>
+  <text x="1215" y="103" text-anchor="middle" font-size="11" font-weight="700" fill="#fdba74" letter-spacing="1">LOCAL LLM ENGINE</text>
+  <text x="1215" y="118" text-anchor="middle" font-size="9" fill="rgba(253,186,116,0.6)">ollama · gemma4:latest · port 11434</text>
+
+  <text x="1215" y="148" text-anchor="middle" font-size="30">🤖</text>
+  <text x="1215" y="175" text-anchor="middle" font-size="9" fill="#fdba74">Structured Pydantic JSON output</text>
+  <text x="1215" y="188" text-anchor="middle" font-size="9" fill="#fdba74">ChatOllama.with_structured_output()</text>
+  <text x="1215" y="202" text-anchor="middle" font-size="8" fill="rgba(253,186,116,0.5)">⚠ No HA pooling · single thread · localhost only</text>
+
+  <!-- Suggestion Agent (bypasses graph) -->
+  <rect x="1060" y="230" width="310" height="80" rx="12" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-dasharray="5,3" filter="url(#softShadow)"/>
+  <text x="1215" y="254" text-anchor="middle" font-size="11" font-weight="700" fill="#fca5a5">SUGGESTION AGENT</text>
+  <text x="1215" y="268" text-anchor="middle" font-size="9" fill="rgba(252,165,165,0.7)">nodes/suggestion_agent.py</text>
+  <text x="1215" y="283" text-anchor="middle" font-size="8" fill="#fca5a5">Called directly from UI — bypasses graph</text>
+  <text x="1215" y="296" text-anchor="middle" font-size="8" fill="rgba(252,165,165,0.6)">⚠ Audit trail broken [F-04 · MEDIUM]</text>
+  <text x="1215" y="309" text-anchor="middle" font-size="8" fill="rgba(252,165,165,0.5)">app.py:899 → run_suggestion_agent()</text>
+
+  <!-- ══════════════════ RAG SUBSYSTEM ══════════════════ -->
+  <rect x="20" y="490" width="660" height="330" rx="12" fill="url(#ragGrad)" stroke="#a855f7" stroke-width="1.5" filter="url(#softShadow)"/>
+  <rect x="20" y="490" width="660" height="36" rx="12" fill="#2d1e3a"/>
+  <rect x="20" y="514" width="660" height="12" fill="#2d1e3a"/>
+  <text x="350" y="513" text-anchor="middle" font-size="11" font-weight="700" fill="#d8b4fe" letter-spacing="1">RAG SUBSYSTEM</text>
+  <text x="350" y="527" text-anchor="middle" font-size="9" fill="rgba(216,180,254,0.6)">rag/  ·  Semantic regulatory retrieval  ·  all-MiniLM-L6-v2 embeddings</text>
+
+  <!-- ChromaDB -->
+  <rect x="36" y="540" width="180" height="250" rx="10" fill="rgba(168,85,247,0.12)" stroke="rgba(168,85,247,0.4)" stroke-width="1.5"/>
+  <text x="126" y="564" text-anchor="middle" font-size="10" font-weight="700" fill="#d8b4fe">🗄 ChromaDB</text>
+  <text x="126" y="577" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.6)">policy_store collection</text>
+  <rect x="48" y="586" width="156" height="16" rx="3" fill="rgba(168,85,247,0.2)"/>
+  <text x="126" y="597" text-anchor="middle" font-size="8" fill="#c4b5fd">EU AI Act</text>
+  <rect x="48" y="608" width="156" height="16" rx="3" fill="rgba(168,85,247,0.2)"/>
+  <text x="126" y="619" text-anchor="middle" font-size="8" fill="#c4b5fd">GDPR</text>
+  <rect x="48" y="630" width="156" height="16" rx="3" fill="rgba(168,85,247,0.2)"/>
+  <text x="126" y="641" text-anchor="middle" font-size="8" fill="#c4b5fd">India DPDPA 2023</text>
+  <rect x="48" y="652" width="156" height="16" rx="3" fill="rgba(168,85,247,0.2)"/>
+  <text x="126" y="663" text-anchor="middle" font-size="8" fill="#c4b5fd">NIST AI RMF</text>
+  <rect x="48" y="674" width="156" height="16" rx="3" fill="rgba(168,85,247,0.2)"/>
+  <text x="126" y="685" text-anchor="middle" font-size="8" fill="#c4b5fd">RBI MRM Guidelines</text>
+  <text x="126" y="710" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.5)">cosine distance search</text>
+  <text x="126" y="723" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.5)">MD5 dedup · top-5 chunks</text>
+  <text x="126" y="740" text-anchor="middle" font-size="8" fill="rgba(252,165,165,0.6)">⚠ Dense-only search</text>
+  <text x="126" y="753" text-anchor="middle" font-size="8" fill="rgba(252,165,165,0.5)">(BM25 missing) · F-03</text>
+  <text x="126" y="773" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.4)">💡 Add hybrid BM25 + re-rank</text>
+
+  <!-- Indexer -->
+  <rect x="240" y="540" width="180" height="140" rx="10" fill="rgba(168,85,247,0.08)" stroke="rgba(168,85,247,0.3)" stroke-width="1"/>
+  <text x="330" y="562" text-anchor="middle" font-size="10" font-weight="700" fill="#d8b4fe">📑 Indexer</text>
+  <text x="330" y="575" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.6)">rag/indexer.py</text>
+  <text x="330" y="593" text-anchor="middle" font-size="8" fill="#c4b5fd">Document-aware chunking</text>
+  <text x="330" y="607" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.6)">_chunk_eu_ai_act()</text>
+  <text x="330" y="620" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.6)">_chunk_dpdpa()</text>
+  <text x="330" y="634" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.6)">Article/section splits</text>
+  <text x="330" y="648" text-anchor="middle" font-size="8" fill="#86efac">✓ Legal context preserved</text>
+  <text x="330" y="665" text-anchor="middle" font-size="7" fill="rgba(216,180,254,0.4)">rag/documents/</text>
+
+  <!-- Retriever -->
+  <rect x="240" y="695" width="180" height="100" rx="10" fill="rgba(168,85,247,0.08)" stroke="rgba(168,85,247,0.3)" stroke-width="1"/>
+  <text x="330" y="717" text-anchor="middle" font-size="10" font-weight="700" fill="#d8b4fe">🔎 Retriever</text>
+  <text x="330" y="730" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.6)">rag/retriever.py</text>
+  <text x="330" y="745" text-anchor="middle" font-size="8" fill="#c4b5fd">retrieve_relevant_clauses()</text>
+  <text x="330" y="758" text-anchor="middle" font-size="8" fill="rgba(216,180,254,0.6)">retrieve_clauses_for_pillar()</text>
+  <text x="330" y="773" text-anchor="middle" font-size="8" fill="rgba(252,165,165,0.6)">⚠ Pillar fallback ignores</text>
+  <text x="330" y="784" text-anchor="middle" font-size="8" fill="rgba(252,165,165,0.5)">tag constraint [F-03]</text>
+
+  <!-- Optimization notes for RAG -->
+  <rect x="440" y="540" width="220" height="250" rx="10" fill="rgba(250,204,21,0.04)" stroke="rgba(250,204,21,0.2)" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="550" y="562" text-anchor="middle" font-size="10" font-weight="700" fill="rgba(253,224,71,0.8)">💡 RAG Improvements</text>
+  <rect x="452" y="572" width="196" height="50" rx="5" fill="rgba(250,204,21,0.07)"/>
+  <text x="550" y="586" text-anchor="middle" font-size="8" font-weight="700" fill="rgba(253,224,71,0.7)">1. Hybrid Retrieval</text>
+  <text x="550" y="599" text-anchor="middle" font-size="7" fill="rgba(253,224,71,0.5)">Add BM25 sparse search alongside</text>
+  <text x="550" y="611" text-anchor="middle" font-size="7" fill="rgba(253,224,71,0.5)">dense vectors for article# queries</text>
+  <rect x="452" y="630" width="196" height="50" rx="5" fill="rgba(250,204,21,0.07)"/>
+  <text x="550" y="644" text-anchor="middle" font-size="8" font-weight="700" fill="rgba(253,224,71,0.7)">2. Metadata Enrichment</text>
+  <text x="550" y="657" text-anchor="middle" font-size="7" fill="rgba(253,224,71,0.5)">Map chunks to 5 RAI pillars</text>
+  <text x="550" y="669" text-anchor="middle" font-size="7" fill="rgba(253,224,71,0.5)">for consistent pillar filtering</text>
+  <rect x="452" y="688" width="196" height="50" rx="5" fill="rgba(250,204,21,0.07)"/>
+  <text x="550" y="702" text-anchor="middle" font-size="8" font-weight="700" fill="rgba(253,224,71,0.7)">3. Re-Ranking Pipeline</text>
+  <text x="550" y="715" text-anchor="middle" font-size="7" fill="rgba(253,224,71,0.5)">Cross-encoder or Cohere reranker</text>
+  <text x="550" y="727" text-anchor="middle" font-size="7" fill="rgba(253,224,71,0.5)">to surface top-K clauses first</text>
+  <text x="550" y="748" text-anchor="middle" font-size="8" fill="rgba(250,204,21,0.4)">⚡ Cache SentenceTransformer</text>
+  <text x="550" y="760" text-anchor="middle" font-size="7" fill="rgba(250,204,21,0.35)">singleton to avoid re-init latency</text>
+  <text x="550" y="775" text-anchor="middle" font-size="7" fill="rgba(250,204,21,0.35)">(currently re-instantiated per query)</text>
+
+  <!-- ══════════════════ PERSISTENCE ══════════════════ -->
+  <rect x="700" y="520" width="300" height="200" rx="12" fill="#0d1f0d" stroke="#22c55e" stroke-width="1.5" filter="url(#softShadow)"/>
+  <rect x="700" y="520" width="300" height="36" rx="12" fill="#1a2d1a"/>
+  <rect x="700" y="544" width="300" height="12" fill="#1a2d1a"/>
+  <text x="850" y="543" text-anchor="middle" font-size="11" font-weight="700" fill="#86efac" letter-spacing="1">PERSISTENCE LAYER</text>
+
+  <!-- SQLite -->
+  <rect x="716" y="560" width="260" height="80" rx="8" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+  <text x="846" y="582" text-anchor="middle" font-size="10" font-weight="700" fill="#86efac">🗄 SQLite  ·  rai_audit.db</text>
+  <text x="846" y="598" text-anchor="middle" font-size="8" fill="rgba(134,239,172,0.7)">LangGraph native checkpointing</text>
+  <text x="846" y="613" text-anchor="middle" font-size="8" fill="rgba(134,239,172,0.7)">msgpack serialization · tamper-proof</text>
+  <text x="846" y="627" text-anchor="middle" font-size="8" fill="rgba(134,239,172,0.7)">EU AI Act Art.50 · GDPR accountability</text>
+
+  <!-- Memory leak warning -->
+  <rect x="716" y="648" width="260" height="56" rx="8" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.35)" stroke-width="1"/>
+  <text x="846" y="665" text-anchor="middle" font-size="9" font-weight="700" fill="#fca5a5">⚠ Memory Leak Risk  [F-05 · MEDIUM]</text>
+  <text x="846" y="679" text-anchor="middle" font-size="8" fill="rgba(252,165,165,0.6)">violations / audit_log / step_trace</text>
+  <text x="846" y="692" text-anchor="middle" font-size="8" fill="rgba(252,165,165,0.5)">accumulate via operator.add indefinitely</text>
+  <text x="846" y="705" text-anchor="middle" font-size="7" fill="rgba(252,165,165,0.4)">raw LLM JSON inflates state per run</text>
+
+  <!-- Models on disk -->
+  <rect x="700" y="735" width="300" height="80" rx="12" fill="rgba(107,114,128,0.15)" stroke="rgba(107,114,128,0.4)" stroke-width="1" filter="url(#softShadow)"/>
+  <text x="850" y="757" text-anchor="middle" font-size="10" font-weight="700" fill="#d1d5db">🤖 Pre-trained Models (disk)</text>
+  <text x="850" y="774" text-anchor="middle" font-size="8" fill="rgba(209,213,219,0.7)">loan_model.pkl  ·  compas_model.pkl</text>
+  <text x="850" y="788" text-anchor="middle" font-size="8" fill="rgba(209,213,219,0.7)">Loaded by Bias Agent per routing</text>
+  <text x="850" y="803" text-anchor="middle" font-size="8" fill="rgba(209,213,219,0.5)">sklearn · serialized feature test sets</text>
+
+  <!-- ══════════════════ PRODUCTION READINESS SCORE ══════════════════ -->
+  <rect x="1020" y="380" width="360" height="440" rx="12" fill="#0d1117" stroke="#374151" stroke-width="1.5" filter="url(#softShadow)"/>
+  <rect x="1020" y="380" width="360" height="36" rx="12" fill="#161b22"/>
+  <rect x="1020" y="404" width="360" height="12" fill="#161b22"/>
+  <text x="1200" y="403" text-anchor="middle" font-size="11" font-weight="700" fill="#e5e7eb" letter-spacing="1">PRODUCTION READINESS</text>
+  <text x="1200" y="417" text-anchor="middle" font-size="9" fill="rgba(229,231,235,0.5)">Staging / MVP Ready  ·  77.1%</text>
+
+  <!-- Score bars -->
+  <g transform="translate(1036, 435)">
+    <!-- Architecture 8/10 -->
+    <text x="0" y="15" font-size="9" fill="#d1d5db">Architecture</text>
+    <text x="320" y="15" text-anchor="end" font-size="9" fill="#60a5fa">8/10</text>
+    <rect x="0" y="20" width="320" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+    <rect x="0" y="20" width="256" height="8" rx="4" fill="#3b82f6"/>
+
+    <!-- Maintainability 7/10 -->
+    <text x="0" y="50" font-size="9" fill="#d1d5db">Maintainability</text>
+    <text x="320" y="50" text-anchor="end" font-size="9" fill="#60a5fa">7/10</text>
+    <rect x="0" y="55" width="320" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+    <rect x="0" y="55" width="224" height="8" rx="4" fill="#3b82f6"/>
+
+    <!-- Scalability 6/10 -->
+    <text x="0" y="85" font-size="9" fill="#d1d5db">Scalability</text>
+    <text x="320" y="85" text-anchor="end" font-size="9" fill="#f59e0b">6/10</text>
+    <rect x="0" y="90" width="320" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+    <rect x="0" y="90" width="192" height="8" rx="4" fill="#f59e0b"/>
+
+    <!-- Reliability 9/10 -->
+    <text x="0" y="120" font-size="9" fill="#d1d5db">Reliability</text>
+    <text x="320" y="120" text-anchor="end" font-size="9" fill="#22c55e">9/10</text>
+    <rect x="0" y="125" width="320" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+    <rect x="0" y="125" width="288" height="8" rx="4" fill="#22c55e"/>
+
+    <!-- Security 7/10 -->
+    <text x="0" y="155" font-size="9" fill="#d1d5db">Security</text>
+    <text x="320" y="155" text-anchor="end" font-size="9" fill="#60a5fa">7/10</text>
+    <rect x="0" y="160" width="320" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+    <rect x="0" y="160" width="224" height="8" rx="4" fill="#3b82f6"/>
+
+    <!-- Observability 9/10 -->
+    <text x="0" y="190" font-size="9" fill="#d1d5db">Observability</text>
+    <text x="320" y="190" text-anchor="end" font-size="9" fill="#22c55e">9/10</text>
+    <rect x="0" y="195" width="320" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+    <rect x="0" y="195" width="288" height="8" rx="4" fill="#22c55e"/>
+
+    <!-- Dev Experience 8/10 -->
+    <text x="0" y="225" font-size="9" fill="#d1d5db">Dev Experience</text>
+    <text x="320" y="225" text-anchor="end" font-size="9" fill="#60a5fa">8/10</text>
+    <rect x="0" y="230" width="320" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+    <rect x="0" y="230" width="256" height="8" rx="4" fill="#3b82f6"/>
+
+    <!-- Total -->
+    <rect x="0" y="250" width="320" height="1" fill="rgba(255,255,255,0.15)"/>
+    <text x="0" y="270" font-size="11" font-weight="700" fill="white">TOTAL</text>
+    <text x="320" y="270" text-anchor="end" font-size="11" font-weight="700" fill="#fbbf24">54 / 70</text>
+  </g>
+
+  <!-- Findings summary -->
+  <g transform="translate(1036, 715)">
+    <text x="0" y="0" font-size="10" font-weight="700" fill="#e5e7eb">Critical Findings</text>
+    <rect x="0" y="8" width="320" height="1" fill="rgba(255,255,255,0.1)"/>
+    <rect x="0" y="14" width="320" height="20" rx="4" fill="rgba(239,68,68,0.15)"/>
+    <text x="8" y="28" font-size="8" fill="#fca5a5">🔴 F-01  Correction loop disconnected  [CRITICAL]</text>
+    <rect x="0" y="40" width="320" height="20" rx="4" fill="rgba(239,100,68,0.12)"/>
+    <text x="8" y="54" font-size="8" fill="#fdba74">🟠 F-02  Disparate Impact ratio inverted  [HIGH]</text>
+    <rect x="0" y="66" width="320" height="20" rx="4" fill="rgba(239,100,68,0.12)"/>
+    <text x="8" y="80" font-size="8" fill="#fdba74">🟠 F-03  RAG pillar fallback ignores tags  [HIGH]</text>
+    <rect x="0" y="92" width="320" height="20" rx="4" fill="rgba(234,179,8,0.12)"/>
+    <text x="8" y="106" font-size="8" fill="#fde68a">🟡 F-04  Suggestions bypass audit log  [MEDIUM]</text>
+    <rect x="0" y="118" width="320" height="20" rx="4" fill="rgba(234,179,8,0.12)"/>
+    <text x="8" y="132" font-size="8" fill="#fde68a">🟡 F-05  State accumulation memory leak  [MEDIUM]</text>
+    <rect x="0" y="144" width="320" height="20" rx="4" fill="rgba(107,114,128,0.2)"/>
+    <text x="8" y="158" font-size="8" fill="#d1d5db">⚪ F-06  Unpinned dependencies  [LOW]</text>
+  </g>
+
+  <!-- ══════════════════ DATA FLOW ARROWS ══════════════════ -->
+
+  <!-- UI → LangGraph (main flow) -->
+  <path d="M 300 175 Q 320 175 330 175" stroke="#60a5fa" stroke-width="2" fill="none" marker-end="url(#arrow_blue)" stroke-dasharray="none"/>
+  <!-- Label -->
+  <text x="311" y="168" font-size="7" fill="rgba(147,197,253,0.7)" text-anchor="middle">create_initial</text>
+  <text x="311" y="177" font-size="7" fill="rgba(147,197,253,0.7)" text-anchor="middle">_state()</text>
+
+  <!-- Policy Node ↔ Retriever (RAG) -->
+  <path d="M 880 248 C 880 470 500 695 420 745" stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arrow_purple)" stroke-dasharray="5,3"/>
+  <path d="M 420 695 C 500 660 700 430 832 220" stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arrow_purple)" stroke-dasharray="5,3"/>
+  <text x="630" y="510" font-size="8" fill="rgba(192,132,252,0.8)" text-anchor="middle">RAG context</text>
+  <text x="550" y="478" font-size="8" fill="rgba(192,132,252,0.6)" text-anchor="middle">query text</text>
+
+  <!-- Policy Node → Ollama -->
+  <path d="M 928 208 C 990 208 1030 155 1060 155" stroke="#fb923c" stroke-width="2" fill="none" marker-end="url(#arrow_orange)"/>
+  <text x="997" y="178" font-size="7" fill="rgba(251,146,60,0.8)" text-anchor="middle">Pydantic</text>
+  <text x="997" y="187" font-size="7" fill="rgba(251,146,60,0.8)" text-anchor="middle">request</text>
+
+  <!-- Ollama → Policy Node (response) -->
+  <path d="M 1060 175 C 1025 175 998 195 928 208" stroke="#fb923c" stroke-width="1.5" fill="none" marker-end="url(#arrow_orange)" stroke-dasharray="4,2"/>
+  <text x="997" y="202" font-size="7" fill="rgba(251,146,60,0.6)" text-anchor="middle">JSON out</text>
+
+  <!-- Suggestion Agent → Ollama -->
+  <path d="M 1215 230 L 1215 210" stroke="rgba(239,68,68,0.7)" stroke-width="1.5" fill="none" marker-end="url(#arrow_red)" stroke-dasharray="4,2"/>
+
+  <!-- UI Suggest button → Suggestion Agent (bypassing graph) -->
+  <path d="M 158 212 C 158 195 1100 195 1100 230" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow_red)" stroke-dasharray="6,3"/>
+  <text x="650" y="188" font-size="8" fill="rgba(252,165,165,0.6)" text-anchor="middle">⚠ Bypasses graph entirely [F-04]</text>
+
+  <!-- All graph nodes → SQLite (audit) -->
+  <path d="M 680 500 L 750 520" stroke="rgba(34,197,94,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrow_green)" stroke-dasharray="4,2"/>
+
+  <!-- Indexer → ChromaDB -->
+  <line x1="240" y1="610" x2="216" y2="610" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrow_purple)"/>
+
+  <!-- Retriever → ChromaDB -->
+  <line x1="240" y1="745" x2="216" y2="745" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrow_purple)"/>
+  <line x1="216" y1="640" x2="216" y2="740" stroke="rgba(168,85,247,0.4)" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- ══════════════════ REGULATION BADGES ══════════════════ -->
+  <g transform="translate(20, 835)">
+    <text x="0" y="0" font-size="9" fill="rgba(255,255,255,0.4)">REGULATORY FRAMEWORKS COVERED</text>
+    <rect x="0" y="8" width="100" height="18" rx="4" fill="rgba(59,130,246,0.2)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+    <text x="50" y="20" text-anchor="middle" font-size="8" fill="#93c5fd">EU AI Act Art.50,13</text>
+    <rect x="108" y="8" width="85" height="18" rx="4" fill="rgba(16,185,129,0.2)" stroke="rgba(16,185,129,0.4)" stroke-width="1"/>
+    <text x="150" y="20" text-anchor="middle" font-size="8" fill="#6ee7b7">GDPR</text>
+    <rect x="201" y="8" width="110" height="18" rx="4" fill="rgba(139,92,246,0.2)" stroke="rgba(139,92,246,0.4)" stroke-width="1"/>
+    <text x="256" y="20" text-anchor="middle" font-size="8" fill="#c4b5fd">India DPDPA 2023</text>
+    <rect x="319" y="8" width="100" height="18" rx="4" fill="rgba(245,158,11,0.2)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+    <text x="369" y="20" text-anchor="middle" font-size="8" fill="#fcd34d">NIST AI RMF</text>
+    <rect x="427" y="8" width="130" height="18" rx="4" fill="rgba(239,68,68,0.2)" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>
+    <text x="492" y="20" text-anchor="middle" font-size="8" fill="#fca5a5">RBI MRM Guidelines</text>
+  </g>
+
+  <!-- ══════════════════ LEGEND ══════════════════ -->
+  <g transform="translate(700, 835)">
+    <text x="0" y="0" font-size="9" fill="rgba(255,255,255,0.4)">LEGEND</text>
+    <rect x="0" y="8" width="10" height="10" rx="2" fill="#3b82f6"/>
+    <text x="14" y="18" font-size="8" fill="rgba(255,255,255,0.6)">Active node</text>
+    <rect x="90" y="8" width="10" height="10" rx="2" fill="none" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="104" y="18" font-size="8" fill="rgba(255,255,255,0.6)">Disconnected / bypassed</text>
+    <line x1="260" y1="13" x2="290" y2="13" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow_blue)"/>
+    <text x="295" y="18" font-size="8" fill="rgba(255,255,255,0.6)">Data flow</text>
+    <line x1="350" y1="13" x2="380" y2="13" stroke="rgba(239,68,68,0.7)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow_red)"/>
+    <text x="385" y="18" font-size="8" fill="rgba(255,255,255,0.6)">Bypass / audit gap</text>
+    <rect x="510" y="8" width="10" height="10" rx="2" fill="rgba(250,204,21,0.2)" stroke="rgba(250,204,21,0.3)" stroke-width="1"/>
+    <text x="524" y="18" font-size="8" fill="rgba(255,255,255,0.6)">Optimization opportunity</text>
+  </g>
+
+  <!-- Bottom metadata strip -->
+  <rect x="0" y="955" width="1400" height="25" fill="rgba(0,0,0,0.4)"/>
+  <text x="700" y="971" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.3)">RAI Compliance Agent · Deep Architecture Audit · May 30 2026 · IIMA EPAIBBL01 Group 3 · PoC/Staging MVP  ·  Status: High-Quality Proof-of-Concept</text>
+</svg>

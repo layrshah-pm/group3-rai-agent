@@ -1,0 +1,293 @@
+/* RAI Compliance Agent — Streamlit custom styles */
+
+/* ── Typography ─────────────────────────────────────────── */
+h1, h2, h3 {
+    font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+/* ── Pipeline progress bar ──────────────────────────────── */
+.pipeline-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 20px 10px;
+    overflow-x: auto;
+}
+.pipeline-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 90px;
+    position: relative;
+    z-index: 1;
+}
+.pipeline-node-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    border: 3px solid #dee2e6;
+    background: #fff;
+    transition: all 0.4s ease;
+    position: relative;
+}
+.pipeline-node-circle.pending {
+    border-color: #dee2e6;
+    background: #f8f9fa;
+    color: #adb5bd;
+}
+.pipeline-node-circle.running {
+    border-color: #2E75B6;
+    background: #e8f0fb;
+    animation: pulse-ring 1.2s ease-in-out infinite;
+}
+.pipeline-node-circle.pass {
+    border-color: #28a745;
+    background: #d4edda;
+}
+.pipeline-node-circle.fail {
+    border-color: #dc3545;
+    background: #f8d7da;
+}
+.pipeline-node-circle.corrected {
+    border-color: #ffc107;
+    background: #fff3cd;
+}
+.pipeline-node-circle.escalated {
+    border-color: #8B0000;
+    background: #f5c6cb;
+}
+@keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0 rgba(46,117,182,0.5); }
+    70%  { box-shadow: 0 0 0 10px rgba(46,117,182,0); }
+    100% { box-shadow: 0 0 0 0 rgba(46,117,182,0); }
+}
+.pipeline-node-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #495057;
+    text-align: center;
+    max-width: 80px;
+    line-height: 1.2;
+}
+.pipeline-node-sub {
+    font-size: 0.65rem;
+    color: #868e96;
+    text-align: center;
+    max-width: 80px;
+}
+.pipeline-connector {
+    flex: 1;
+    height: 3px;
+    min-width: 20px;
+    background: #dee2e6;
+    margin-bottom: 30px;
+    transition: background 0.4s ease;
+    position: relative;
+}
+.pipeline-connector.active {
+    background: linear-gradient(90deg, #28a745, #2E75B6);
+}
+.pipeline-connector.fail {
+    background: #dc3545;
+}
+
+/* ── Text annotation highlights ────────────────────────── */
+.rai-highlight-pii {
+    background: rgba(220, 53, 69, 0.18);
+    border-bottom: 2px solid #dc3545;
+    border-radius: 2px;
+    padding: 1px 2px;
+    cursor: help;
+    position: relative;
+}
+.rai-highlight-policy {
+    background: rgba(253, 126, 20, 0.15);
+    border-bottom: 2px solid #fd7e14;
+    border-radius: 2px;
+    padding: 1px 2px;
+    cursor: help;
+}
+.rai-highlight-corrected {
+    background: rgba(40, 167, 69, 0.15);
+    border-bottom: 2px solid #28a745;
+    border-radius: 2px;
+    padding: 1px 2px;
+    text-decoration: line-through;
+    color: #666;
+}
+.rai-citation {
+    display: inline-block;
+    background: #2E75B6;
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0px 4px;
+    border-radius: 3px;
+    margin-left: 3px;
+    vertical-align: super;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+}
+
+/* ── Audit timeline ─────────────────────────────────────── */
+.audit-timeline {
+    position: relative;
+    padding-left: 28px;
+}
+.audit-timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, #2E75B6, #dee2e6);
+}
+.audit-event {
+    position: relative;
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    background: #fff;
+    font-size: 0.85rem;
+}
+.audit-event::before {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 14px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #dee2e6;
+    background: #fff;
+}
+.audit-event.pass::before   { background: #28a745; box-shadow: 0 0 0 2px #28a745; }
+.audit-event.fail::before   { background: #dc3545; box-shadow: 0 0 0 2px #dc3545; }
+.audit-event.corrected::before { background: #ffc107; box-shadow: 0 0 0 2px #ffc107; }
+.audit-event.escalated::before { background: #8B0000; box-shadow: 0 0 0 2px #8B0000; }
+.audit-event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.audit-event-node {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #212529;
+}
+.audit-event-time {
+    font-size: 0.72rem;
+    color: #868e96;
+}
+.audit-event-action {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 6px;
+    background: #e9ecef;
+    color: #495057;
+}
+.audit-event-detail {
+    margin-top: 5px;
+    font-size: 0.78rem;
+    color: #495057;
+    line-height: 1.5;
+}
+.audit-event-citation {
+    margin-top: 5px;
+    font-size: 0.75rem;
+    color: #2E75B6;
+    font-style: italic;
+}
+
+/* ── Violation severity chips ───────────────────────────── */
+.severity-high {
+    display: inline-block;
+    background: #dc3545;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 4px;
+}
+.severity-medium {
+    display: inline-block;
+    background: #fd7e14;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 4px;
+}
+.severity-low {
+    display: inline-block;
+    background: #ffc107;
+    color: #212529;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+/* ── Metric card row ────────────────────────────────────── */
+div[data-testid="metric-container"] {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+/* ── Audit trail table ──────────────────────────────────── */
+.dataframe tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+.dataframe thead th {
+    background-color: #2E75B6;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* ── Expander header ────────────────────────────────────── */
+details summary {
+    font-weight: 600;
+}
+
+/* ── Primary button ─────────────────────────────────────── */
+div[data-testid="stButton"] button[kind="primary"] {
+    background-color: #2E75B6;
+    border-color: #2E75B6;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+div[data-testid="stButton"] button[kind="primary"]:hover {
+    background-color: #1a5a9e;
+    border-color: #1a5a9e;
+}
+
+/* ── Sidebar run history ────────────────────────────────── */
+.run-history-item {
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    border-left: 4px solid #dee2e6;
+    font-size: 0.85rem;
+    color: #1a1a1a !important;
+}
+.run-pass      { border-left-color: #28a745; background: #f0fff4; color: #1a1a1a !important; }
+.run-corrected { border-left-color: #ffc107; background: #fffdf0; color: #1a1a1a !important; }
+.run-fail      { border-left-color: #dc3545; background: #fff5f5; color: #1a1a1a !important; }
+.run-escalated { border-left-color: #8B0000; background: #fff0f0; color: #1a1a1a !important; }
