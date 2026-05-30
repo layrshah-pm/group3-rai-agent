@@ -44,9 +44,14 @@ def scorecard_node(state: ComplianceState) -> dict:
         rai_scores = _compute_pillar_scores(state, violations)
 
     # --- Determine final status ---
+    # CORRECTED: correction ran and all pillars now pass.
+    # PASS:      no violations from the start.
+    # FAIL:      violations remain after all correction attempts (or no correction).
     low_pillars = [k for k, v in rai_scores.items() if v < 2]
     if low_pillars or sum(rai_scores.values()) < 10:
         final_status = "FAIL"
+    elif state.get("correction_count", 0) > 0:
+        final_status = "CORRECTED"
     else:
         final_status = "PASS"
 

@@ -7,11 +7,13 @@ Scans current_text for Personally Identifiable Information, builds a
 structured result, and appends one entry to the audit log and step_trace.
 """
 
+import re as _re
 from datetime import datetime, timezone
-from state import ComplianceState, PIIResult
 
 from presidio_analyzer import AnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine
+
+from state import ComplianceState, PIIResult
 
 # Initialise once at module level — expensive to recreate per call
 _analyzer = AnalyzerEngine()
@@ -47,7 +49,6 @@ _FP_DENYLIST: set[str] = {
     "indian",                                 # nationality adjective, not a person
 }
 
-import re as _re
 _ALNUM_RE = _re.compile(r"[a-zA-Z0-9]")
 
 

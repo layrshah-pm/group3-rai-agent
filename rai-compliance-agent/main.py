@@ -68,9 +68,10 @@ scenario_1 = create_initial_state(
 )
 
 # ---------------------------------------------------------------------------
-# Scenario 2 — PII leakage (Expected: FAIL)
+# Scenario 2 — PII leakage (Expected: CORRECTED)
 # Contains: PERSON, EMAIL_ADDRESS, PHONE_NUMBER
-# Presidio detects PII — no auto-correction in linear graph.
+# Presidio detects PII → correction node applies Presidio redaction →
+# full re-audit passes → final_status = CORRECTED.
 # ---------------------------------------------------------------------------
 scenario_2 = create_initial_state(
     input_type="text",

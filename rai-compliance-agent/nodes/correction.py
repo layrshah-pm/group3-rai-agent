@@ -153,6 +153,13 @@ def correction_node(state: ComplianceState) -> dict:
         "audit_log": [log_entry],
         "step_trace": [step_entry],
         "escalation_reason": escalation_reason,
+        # Reset all agent results so the full audit chain re-runs on corrected text.
+        # Without this, _should_correct would see stale passing results from a previous
+        # cycle and mis-route even if the current text still has violations.
+        "pii_result": None,
+        "bias_result": None,
+        "policy_result": None,
+        "explainability_result": None,
     }
 
 

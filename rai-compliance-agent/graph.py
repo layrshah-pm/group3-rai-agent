@@ -43,17 +43,25 @@ def _should_correct(state: ComplianceState) -> str:
     """
     Conditional edge: runs after policy_agent.
 
+    Routes based on CURRENT agent results, not accumulated violations.
+    The violations list is a union across all passes (deduped), so it retains
+    old entries even after a successful correction. Checking agent results
+    directly is the only reliable signal for whether this audit cycle passed.
+
     Returns:
-        "correction"  — violations exist and correction budget remains
-        "escalation"  — correction budget exhausted (max_corrections reached)
-        "scorecard"   — no violations; proceed to final scorecard
+        "scorecard"   — current cycle: all agents passed
+        "escalation"  — violations remain but correction budget exhausted
+        "correction"  — violations remain and budget available
     """
-    violations = state.get("violations") or []
-    if not violations:
+    pii_passed    = (state.get("pii_result")    or {}).get("passed", True)
+    bias_passed   = (state.get("bias_result")   or {}).get("passed", True)
+    policy_passed = (state.get("policy_result") or {}).get("passed", True)
+
+    if pii_passed and bias_passed and policy_passed:
         return "scorecard"
 
     correction_count = state.get("correction_count", 0)
-    max_corrections = state.get("max_corrections", 3)
+    max_corrections  = state.get("max_corrections", 3)
 
     if correction_count >= max_corrections:
         return "escalation"

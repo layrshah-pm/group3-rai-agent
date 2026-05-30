@@ -66,12 +66,14 @@ Ingestion → PII Agent → Bias Agent → Explainability Agent → Policy Agent
                                 (cycles up to max_corrections=3)
 ```
 
-Routing logic lives in `route_after_pii`, `route_after_bias`, `route_after_policy`, `route_after_correction` in `graph.py`. Correction always routes back to `pii_agent` (not to whatever triggered it) so the full audit chain re-runs on corrected text.
+Routing functions in `graph.py`: `_should_correct` (after policy_agent) and `_after_correction` (after correction). Correction always routes back to `pii_agent` so the full audit chain re-runs on corrected text.
+
+**`_should_correct` routes on current agent results, not accumulated `violations`.** The violations list is a union across all passes and retains old entries; using it for routing would prevent the loop from ever exiting on a successful correction.
 
 ### State schema (`state.py`)
 
 `ComplianceState` is the single source of truth. Key design constraints:
-- `violations: Annotated[list[str], operator.add]` — agents append, never overwrite; same for `audit_log`
+- `violations: Annotated[list[str], reduce_violations]` — agents append (deduped set-union), never overwrite; `audit_log` uses `operator.add`. `reduce_violations` supports `CLEAR_VIOLATIONS` sentinel but correction routing does NOT rely on it — routing checks agent results directly.
 - `current_text` is the working copy mutated by correction; `raw_input` is immutable
 - `retrieved_clauses: Optional[list[dict]]` — populated by policy agent after RAG retrieval; direct assignment (not `operator.add`), overwrites each run
 - `_model_path` key inside `feature_vector` — bias agent and explainability agent both read this to switch model files (e.g. for COMPAS scenario)
@@ -154,7 +156,9 @@ Copy `.env.example` → `.env`. Default Ollama endpoint is `http://localhost:114
 
 Do not change without understanding downstream effects:
 
-- **`operator.add` on `violations` / `audit_log`** — removing breaks accumulation across nodes
+- **`reduce_violations` on `violations`** — set-union dedup across cycles; `operator.add` on `audit_log` — do not change either
+- **`_should_correct` checks agent results** — not `state.violations`; violations accumulate and never clear between cycles so they cannot be used for routing
+- **correction_node resets agent results** — returns `pii_result=None`, `bias_result=None`, `policy_result=None`, `explainability_result=None` so agents re-run on corrected text; do not remove
 - **`correction → pii_agent` routing** — intentional; full chain re-runs on corrected text
 - **`_safe_fallback` in policy_agent** — LLM error path must not crash the graph
 - **`_model_path` in `feature_vector`** — internal key for switching model files; strip before passing to model features
