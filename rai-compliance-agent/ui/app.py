@@ -450,7 +450,11 @@ def render_text_auditor():
                 )
 
     suggestions_result = st.session_state.get("suggestions_result")
-    if is_policy_doc and fs == "FAIL":
+    # Show suggestion button for any policy doc run where at least one pillar is < 3.
+    # Previously gated on fs == "FAIL" only, which missed PASS/CORRECTED runs with
+    # partial scores, and broke entirely when escalation bypassed scorecard.
+    has_improvable_pillars = is_policy_doc and scores and any(v < 3 for v in scores.values())
+    if has_improvable_pillars:
         col_s1, col_s2 = st.columns([2, 1])
         with col_s1:
             st.markdown(

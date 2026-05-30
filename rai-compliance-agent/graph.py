@@ -49,10 +49,19 @@ def _should_correct(state: ComplianceState) -> str:
     directly is the only reliable signal for whether this audit cycle passed.
 
     Returns:
-        "scorecard"   — current cycle: all agents passed
+        "scorecard"   — current cycle: all agents passed, OR policy_document mode
         "escalation"  — violations remain but correction budget exhausted
         "correction"  — violations remain and budget available
     """
+    # Policy document mode: skip the correction loop entirely.
+    # The purpose of policy_document auditing is to surface gaps and scores —
+    # auto-correcting the document text is not meaningful here. Improvements
+    # are handled separately by the suggestion_agent (user-driven from the UI).
+    # Without this guard, weak policies always escalate, bypassing scorecard
+    # and leaving rai_scores=None (breaks the radar chart and suggestions).
+    if state.get("input_type") == "policy_document":
+        return "scorecard"
+
     pii_passed    = (state.get("pii_result")    or {}).get("passed", True)
     bias_passed   = (state.get("bias_result")   or {}).get("passed", True)
     policy_passed = (state.get("policy_result") or {}).get("passed", True)
