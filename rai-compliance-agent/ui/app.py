@@ -1231,7 +1231,7 @@ def _run_and_display(initial_state: dict):
         return
 
     st.session_state["pipeline_completed"] = completed
-    st.session_state["pipeline_log"] = all_steps
+    st.session_state["pipeline_log"] = []
     st.session_state["text_audit_result"] = full_state
     st.session_state["history_thread_id"] = thread_id
 
