@@ -1,0 +1,15 @@
+AI SYSTEM DISCLOSURE: The following credit assessment was produced by an automated AI model. First National Bank is the responsible party for this output and its consequences.
+
+Application Reference: REF-20240418-009
+
+Decision: DENIED
+
+Confidence: 0.74/1.0
+
+Reason for denial: The assessment identified two primary risk factors: (1) debt-to-income ratio of 52%, which exceeds our 40% threshold; (2) credit utilisation above 85% across existing accounts, indicating high near-term default risk.
+
+Data sources: Credit bureau records (last updated 30 days prior to assessment) and internal transaction history. Limitation: bureau data may not reflect recent account closures.
+
+No personal characteristics such as age, gender, nationality, or marital status influenced this outcome.
+
+You have the right to: (a) request a full explanation of this decision, (b) contest any inaccurate data used, and (c) request a review by a human credit officer. To exercise any of these rights, write to First National Bank Credit Decisions, PO Box 1001, within 60 days.

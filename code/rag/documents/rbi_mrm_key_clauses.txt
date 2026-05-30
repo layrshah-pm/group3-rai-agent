@@ -1,0 +1,55 @@
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines 2023]
+[ARTICLE: Section 3.2]
+[REFERENCE: RBI MRM 2023 Section 3.2 — Model Validation Methodology]
+[PILLAR: governance]
+Model validation must be conducted by a function independent of the model development team. The validation process shall include conceptual soundness review, outcome analysis, benchmarking against alternative models, and sensitivity testing. Validators must document all findings, limitations, and compensating controls. Models that fail validation must not be deployed in production until remediation is complete and re-validated.
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines 2023]
+[ARTICLE: Section 4.1]
+[REFERENCE: RBI MRM 2023 Section 4.1 — Model Inventory and Named Accountability]
+[PILLAR: governance]
+Every AI/ML model used in financial or operational decisions must be registered in a central model inventory. Each model must have a named individual owner responsible for its governance, performance, and compliance. The inventory must be maintained current and reviewed quarterly. The inventory shall record at minimum: model purpose, development date, last validation date, risk tier, owner name, and current operational status.
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines 2023]
+[ARTICLE: Section 4.2]
+[REFERENCE: RBI MRM 2023 Section 4.2 — Model Documentation Standards]
+[PILLAR: transparency]
+Each model in the inventory must have comprehensive documentation covering: theoretical basis and assumptions, data sources and preprocessing steps, variable selection rationale, training and validation methodology, known limitations, intended use cases, and explicitly out-of-scope applications. Documentation must be updated whenever the model is materially modified or retrained. Documentation must be accessible to internal audit and regulators upon request.
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines 2023]
+[ARTICLE: Section 7]
+[REFERENCE: RBI MRM 2023 Section 7 — Fairness and Bias Assessment in AI Models]
+[PILLAR: fairness]
+Regulated entities must assess AI models for discriminatory outcomes against protected characteristics including gender, religion, caste, age, and geography. Bias testing must be conducted during initial validation and repeated after each significant model update. Institutions shall use recognised fairness metrics such as disparate impact ratio, demographic parity difference, and equalised odds. Where bias is detected, the model must not be deployed without documented mitigation and approval from the Model Risk Committee.
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines 2023]
+[ARTICLE: Section 7.2]
+[REFERENCE: RBI MRM 2023 Section 7.2 — Disparate Impact Standards for Credit and Lending Models]
+[PILLAR: fairness]
+Credit scoring, loan approval, and pricing models must demonstrate that outcomes for protected groups do not fall below 80 percent of the rate for the most favoured group (the four-fifths rule). Any model with a disparate impact ratio below 0.8 for any protected characteristic must undergo mandatory bias remediation before deployment. The remediation approach and residual risk acceptance must be approved by senior management and documented in the model risk register.
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines 2023]
+[ARTICLE: Section 8.1]
+[REFERENCE: RBI MRM 2023 Section 8.1 — Ongoing Performance Monitoring Requirements]
+[PILLAR: robustness]
+All production models must be subject to ongoing performance monitoring on at least a monthly basis. Monitoring shall track: predictive accuracy against a hold-out or recent out-of-time sample, stability of key input variables, output distribution shifts, and business outcome metrics. Monitoring results must be reported to the Model Risk Committee quarterly. Significant performance degradation, defined as accuracy declining by more than 10 percentage points from the baseline, must trigger immediate escalation and review.
+[/CHUNK]
+
+[CHUNK]
+[REGULATION: RBI Model Risk Management Guidelines 2023]
+[ARTICLE: Section 8.2]
+[REFERENCE: RBI MRM 2023 Section 8.2 — Model Drift Detection and Revalidation Triggers]
+[PILLAR: robustness]
+Institutions must implement statistical tests to detect population stability index (PSI) and characteristic stability index (CSI) shifts in model inputs. A PSI exceeding 0.25 or a CSI exceeding 0.10 for any key feature shall trigger mandatory model review and revalidation. Models operating in production for more than 24 months without a full revalidation must be revalidated regardless of monitored performance. Revalidation findings and approval decisions must be recorded in the central model inventory within 30 days of completion.
+[/CHUNK]

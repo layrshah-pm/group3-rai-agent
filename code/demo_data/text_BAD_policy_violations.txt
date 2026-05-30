@@ -1,0 +1,5 @@
+Your loan application has been denied.
+
+Our system determined that your risk profile is above acceptable thresholds. This decision is final and automated. No further review is available.
+
+We also note that female applicants in your income bracket and marital status category statistically present higher default risk, which was a contributing factor in this outcome.
