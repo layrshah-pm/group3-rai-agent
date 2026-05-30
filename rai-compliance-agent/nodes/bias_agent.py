@@ -53,7 +53,33 @@ def bias_agent_node(state: ComplianceState) -> dict:
             "equalized_odds_diff": bias_result["equalized_odds_diff"],
             "disparate_impact_ratio": bias_result["disparate_impact_ratio"],
         },
-        "correction_count": state["correction_count"],
+    }
+
+    b = bias_result
+    summary = b["details"]
+
+    step_entry = {
+        "step":  "bias_agent",
+        "label": "Bias & Fairness",
+        "status": "fail" if not b["passed"] else "pass",
+        "prompt": None,
+        "response": {
+            "mode": state["input_type"],
+            "thresholds": {
+                "demographic_parity": DEMOGRAPHIC_PARITY_THRESHOLD,
+                "equalized_odds":     EQUALIZED_ODDS_THRESHOLD,
+                "disparate_impact":   DISPARATE_IMPACT_THRESHOLD,
+            },
+            "metrics": {
+                "demographic_parity_diff": b.get("demographic_parity_diff"),
+                "equalized_odds_diff":     b.get("equalized_odds_diff"),
+                "disparate_impact_ratio":  b.get("disparate_impact_ratio"),
+            },
+            "privileged_group":   b.get("privileged_group"),
+            "unprivileged_group": b.get("unprivileged_group"),
+            "passed": b["passed"],
+        },
+        "summary": summary,
     }
 
     return {
@@ -61,6 +87,7 @@ def bias_agent_node(state: ComplianceState) -> dict:
         "violations": new_violations,
         "current_node": "bias_agent",
         "audit_log": [log_entry],
+        "step_trace": [step_entry],
     }
 
 
@@ -140,13 +167,16 @@ def _check_model_bias(state: ComplianceState) -> BiasResult:
         else f"All fairness metrics within threshold. DI={di_ratio:.3f}, DP={dp_diff:.3f}, EO={eo_diff:.3f}"
     )
 
-    # Identify privileged / unprivileged by denial rate
+    # Identify privileged / unprivileged by positive outcome (approval) rate.
+    # The group with the HIGHEST approval rate is privileged (benefits most from the model).
+    # The group with the LOWEST approval rate is unprivileged (least favoured by the model).
+    # This follows the standard Fairlearn / US 4/5ths rule convention.
     groups = {}
     for pred, g in zip(y_pred, s_test.values):
         groups.setdefault(g, []).append(pred)
-    rates = {g: sum(v) / len(v) for g, v in groups.items()}
-    privileged = min(rates, key=rates.get)    # lowest denial rate = privileged
-    unprivileged = max(rates, key=rates.get)
+    rates = {g: sum(v) / len(v) for g, v in groups.items()}  # approval rates per group
+    privileged   = max(rates, key=rates.get)   # highest approval rate = privileged
+    unprivileged = min(rates, key=rates.get)   # lowest  approval rate = unprivileged
 
     return BiasResult(
         demographic_parity_diff=round(float(dp_diff), 4),
@@ -173,11 +203,21 @@ def _check_text_bias(state: ComplianceState) -> BiasResult:
 
 
 def _disparate_impact_ratio(y_pred, sensitive_features) -> float:
-    """Computes min(P(Y=1|A=a)) / max(P(Y=1|A=a)) across groups."""
+    """
+    Computes the disparate impact ratio per the US 4/5ths rule:
+
+        DI = min(P(Y=1 | A=a)) / max(P(Y=1 | A=a))
+
+    A ratio below 0.8 indicates that the disadvantaged group receives fewer
+    than 80% of the positive outcomes relative to the most-favoured group.
+    Returns 1.0 (no disparity) when max_rate is 0 to avoid division by zero.
+    """
     groups: dict = {}
     for pred, g in zip(y_pred, sensitive_features):
         groups.setdefault(g, []).append(int(pred))
     rates = {g: sum(v) / len(v) for g, v in groups.items()}
+    if not rates:
+        return 1.0
     min_rate = min(rates.values())
     max_rate = max(rates.values())
     return min_rate / max_rate if max_rate > 0 else 1.0

@@ -1,40 +1,22 @@
 """
-graph.py
---------
-Defines and compiles the LangGraph compliance graph.
+graph.py — RAI Compliance Agent graph with self-correction loop.
 
-This file wires together all nodes and edges, defines the conditional
-routing logic, and compiles the graph with a SQLite checkpointer for
-state persistence (the audit trail).
+Execution flow:
+  ingestion
+    → pii_agent
+      → bias_agent
+        → explainability_agent
+          → policy_agent
+            → [should_correct?]
+              YES → correction → pii_agent  (re-enters audit chain)
+              NO  → scorecard → END
 
-Graph topology:
-                    ┌─────────────┐
-                    │  INGESTION  │
-                    └──────┬──────┘
-                           │
-                    ┌──────▼──────┐
-              ┌─────│  PII AGENT  │◄────────────────┐
-              │     └──────┬──────┘                 │
-              │            │ pass                   │
-              │     ┌──────▼──────┐                 │
-              │     │ BIAS AGENT  │◄──────────┐     │
-              │     └──────┬──────┘           │     │
-              │            │ pass             │     │
-              │     ┌──────▼────────────┐     │     │
-              │     │EXPLAINABILITY AGT │     │     │
-              │     └──────┬────────────┘     │     │
-              │            │ (always pass)    │     │
-              │     ┌──────▼──────┐           │     │
-              │     │POLICY AGENT │◄────┐     │     │
-              │     └──────┬──────┘     │     │     │
-              │            │ pass       │     │     │
-              │     ┌──────▼──────┐     │     │     │
-              │     │ SCORECARD   │     │     │     │
-              │     └─────────────┘     │     │     │
-              │                         │     │     │
-              └──── violation ──►  CORRECTION ──────┘
-                                  (cycles back to
-                                   PII agent)
+When correction_count >= max_corrections (default 3) the graph escalates
+to human review via the escalation node rather than attempting another fix.
+
+Every node transition is persisted to rai_audit.db via the SqliteSaver
+checkpointer, providing the tamper-proof audit trail required by
+EU AI Act Article 50 and DPDPA 2023 Section 11.
 """
 
 import sqlite3
@@ -48,107 +30,120 @@ from nodes import (
     bias_agent_node,
     explainability_agent_node,
     policy_agent_node,
-    correction_node,
     scorecard_node,
+    correction_node,
 )
 
 
 # ---------------------------------------------------------------------------
-# Routing functions
-# Each returns a string key that maps to the next node name.
+# Routing functions (pure — read state, return node name)
 # ---------------------------------------------------------------------------
 
-def route_after_pii(state: ComplianceState) -> str:
+def _should_correct(state: ComplianceState) -> str:
     """
-    After PII agent runs:
-      - If PII found AND corrections remaining → self-correct
-      - If PII found AND no corrections left   → escalate (go to scorecard)
-      - If PII clean                           → proceed to bias agent
+    Conditional edge: runs after policy_agent.
+
+    Returns:
+        "correction"  — violations exist and correction budget remains
+        "escalation"  — correction budget exhausted (max_corrections reached)
+        "scorecard"   — no violations; proceed to final scorecard
     """
-    pii = state.get("pii_result") or {}
-    if not pii.get("passed", True):
-        if state["correction_count"] < state["max_corrections"]:
-            print("[ROUTER] PII violation → routing to correction node")
-            return "correction"
-        else:
-            print("[ROUTER] PII violation + max corrections reached → escalating")
-            return "scorecard"
-    return "bias_agent"
+    violations = state.get("violations") or []
+    if not violations:
+        return "scorecard"
+
+    correction_count = state.get("correction_count", 0)
+    max_corrections = state.get("max_corrections", 3)
+
+    if correction_count >= max_corrections:
+        return "escalation"
+
+    return "correction"
 
 
-def route_after_bias(state: ComplianceState) -> str:
+def _after_correction(state: ComplianceState) -> str:
     """
-    After bias agent runs:
-      - If bias detected AND corrections remaining → self-correct
-      - If bias detected AND no corrections left   → escalate
-      - If bias clean                              → proceed to policy agent
-    """
-    bias = state.get("bias_result") or {}
-    if not bias.get("passed", True):
-        if state["correction_count"] < state["max_corrections"]:
-            print("[ROUTER] Bias violation → routing to correction node")
-            return "correction"
-        else:
-            print("[ROUTER] Bias violation + max corrections reached → escalating")
-            return "scorecard"
-    return "explainability_agent"
+    Conditional edge: runs after correction_node.
 
-
-def route_after_policy(state: ComplianceState) -> str:
+    After correction the full audit chain must re-run from pii_agent so
+    that each pillar re-evaluates the corrected text independently.
+    If we've just hit the max, hand off to escalation instead.
     """
-    After policy agent runs:
-      - If violations found AND corrections remaining → self-correct
-      - If violations found AND no corrections left   → escalate
-      - If policy clean                              → proceed to scorecard
-    """
-    policy = state.get("policy_result") or {}
-    if not policy.get("passed", True):
-        if state["correction_count"] < state["max_corrections"]:
-            print("[ROUTER] Policy violation → routing to correction node")
-            # Set active_violation to the highest severity violation
-            violations = policy.get("violations", [])
-            if violations:
-                # Sort by severity and pick the worst one to fix first
-                severity_order = {"high": 0, "medium": 1, "low": 2}
-                violations_sorted = sorted(
-                    violations,
-                    key=lambda v: severity_order.get(v.get("severity", "low"), 2)
-                )
-                return "correction"
-        else:
-            print("[ROUTER] Policy violation + max corrections reached → escalating")
-            return "scorecard"
-    return "scorecard"
+    correction_count = state.get("correction_count", 0)
+    max_corrections = state.get("max_corrections", 3)
 
+    if correction_count >= max_corrections:
+        return "escalation"
 
-def route_after_correction(state: ComplianceState) -> str:
-    """
-    After self-correction runs, always route back to PII agent
-    so the full auditor chain re-runs on the corrected text.
-
-    This is the cyclic edge that makes LangGraph necessary.
-    A linear pipeline cannot do this.
-    """
-    print(f"[ROUTER] Correction complete → re-running full audit chain")
     return "pii_agent"
 
 
 # ---------------------------------------------------------------------------
-# Graph construction
+# Escalation node (inline — no separate file needed)
+# ---------------------------------------------------------------------------
+
+def _escalation_node(state: ComplianceState) -> dict:
+    """
+    Terminal node for cases where auto-correction could not resolve violations.
+    Sets final_status = ESCALATED and documents the reason for human review.
+
+    This node fulfils EU AI Act Article 14 (human oversight) and maps to the
+    Governance & Accountability pillar — every escalation is audit-logged.
+    """
+    from datetime import datetime, timezone
+
+    violations = list(set(state.get("violations") or []))
+    count = state.get("correction_count", 0)
+
+    reason = (
+        f"Auto-correction exhausted after {count} attempt(s). "
+        f"Unresolved violations: {', '.join(violations)}. "
+        "Human review required per EU AI Act Article 14."
+    )
+
+    print(f"\n[ESCALATION] Human review required.")
+    print(f"[ESCALATION] {reason}")
+
+    log_entry = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "node": "escalation",
+        "action": "HUMAN_REVIEW_REQUIRED",
+        "result": "escalated",
+        "detail": {
+            "correction_attempts": count,
+            "unresolved_violations": violations,
+            "reason": reason,
+            "regulatory_basis": "EU AI Act Art.14 / NIST MANAGE 1.3",
+        },
+    }
+
+    step_entry = {
+        "step":  "escalation",
+        "label": "Human Escalation",
+        "status": "escalated",
+        "prompt": None,
+        "response": {
+            "final_status": "ESCALATED",
+            "correction_attempts": count,
+            "unresolved_violations": violations,
+        },
+        "summary": reason,
+    }
+
+    return {
+        "final_status": "ESCALATED",
+        "escalation_reason": reason,
+        "current_node": "escalation",
+        "audit_log": [log_entry],
+        "step_trace": [step_entry],
+    }
+
+
+# ---------------------------------------------------------------------------
+# Graph builder
 # ---------------------------------------------------------------------------
 
 def build_graph():
-    """
-    Builds and returns the compiled LangGraph application.
-
-    The returned `app` object is what you call with:
-        result = app.invoke(initial_state, config=config)
-    or stream with:
-        for chunk in app.stream(initial_state, config=config):
-            print(chunk)
-    """
-
-    # --- Initialise graph with our state schema ---
     workflow = StateGraph(ComplianceState)
 
     # --- Register all nodes ---
@@ -158,72 +153,52 @@ def build_graph():
     workflow.add_node("explainability_agent",  explainability_agent_node)
     workflow.add_node("policy_agent",          policy_agent_node)
     workflow.add_node("correction",            correction_node)
+    workflow.add_node("escalation",            _escalation_node)
     workflow.add_node("scorecard",             scorecard_node)
 
-    # --- Entry point ---
+    # --- Linear spine: ingestion through policy ---
     workflow.set_entry_point("ingestion")
-
-    # --- Fixed edges (no branching) ---
-    workflow.add_edge("ingestion", "pii_agent")
-
-    # --- Conditional edges (the routing logic lives here) ---
-    workflow.add_conditional_edges(
-        "pii_agent",
-        route_after_pii,
-        {
-            "bias_agent":  "bias_agent",
-            "correction":  "correction",
-            "scorecard":   "scorecard",
-        }
-    )
-
-    workflow.add_conditional_edges(
-        "bias_agent",
-        route_after_bias,
-        {
-            "explainability_agent": "explainability_agent",
-            "correction":           "correction",
-            "scorecard":            "scorecard",
-        }
-    )
-
-    # Fixed edge: explainability is informational, always proceeds to policy
+    workflow.add_edge("ingestion",            "pii_agent")
+    workflow.add_edge("pii_agent",            "bias_agent")
+    workflow.add_edge("bias_agent",           "explainability_agent")
     workflow.add_edge("explainability_agent", "policy_agent")
 
+    # --- Conditional routing after policy_agent ---
+    # Routes to correction, escalation, or scorecard based on violation state
     workflow.add_conditional_edges(
         "policy_agent",
-        route_after_policy,
+        _should_correct,
         {
-            "scorecard":  "scorecard",
             "correction": "correction",
-        }
+            "escalation": "escalation",
+            "scorecard":  "scorecard",
+        },
     )
 
-    # --- Cyclic edge: correction always loops back to PII agent ---
+    # --- Correction loop: re-enter full audit chain after fix ---
     workflow.add_conditional_edges(
         "correction",
-        route_after_correction,
+        _after_correction,
         {
-            "pii_agent": "pii_agent",
-        }
+            "pii_agent":  "pii_agent",
+            "escalation": "escalation",
+        },
     )
 
-    # --- Terminal node ---
-    workflow.add_edge("scorecard", END)
+    # --- Terminal edges ---
+    workflow.add_edge("scorecard",   END)
+    workflow.add_edge("escalation",  END)
 
-    # --- Compile with SQLite checkpointer (the audit trail) ---
-    # Each graph run is identified by a thread_id in the config.
-    # LangGraph saves state at every node transition automatically.
+    # --- Persist every checkpoint to SQLite (audit trail) ---
     conn = sqlite3.connect("rai_audit.db", check_same_thread=False)
     checkpointer = SqliteSaver(conn)
+    compiled = workflow.compile(checkpointer=checkpointer)
 
-    app = workflow.compile(checkpointer=checkpointer)
+    print(
+        "[GRAPH] Compiled with correction loop and escalation path. "
+        "Audit trail → rai_audit.db"
+    )
+    return compiled
 
-    print("[GRAPH] Compiled successfully. Audit trail → rai_audit.db")
-    return app
 
-
-# ---------------------------------------------------------------------------
-# Convenience: build once at import time
-# ---------------------------------------------------------------------------
 app = build_graph()

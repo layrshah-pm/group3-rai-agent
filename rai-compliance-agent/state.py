@@ -15,6 +15,22 @@ from typing_extensions import TypedDict
 
 
 # ---------------------------------------------------------------------------
+# Custom state reducers
+# ---------------------------------------------------------------------------
+
+def reduce_violations(old: list[str], new: list[str]) -> list[str]:
+    """
+    Combines violation lists without duplicate entries.
+    If 'CLEAR_VIOLATIONS' is present in 'new', we clear the list.
+    """
+    if new is None:
+        return old or []
+    if "CLEAR_VIOLATIONS" in new:
+        return [v for v in new if v != "CLEAR_VIOLATIONS"]
+    return list(set(old or []) | set(new))
+
+
+# ---------------------------------------------------------------------------
 # Sub-schemas for each agent's result
 # These are plain dicts (not TypedDicts) so they serialise cleanly to SQLite.
 # ---------------------------------------------------------------------------
@@ -61,19 +77,29 @@ class ComplianceState(TypedDict):
     """
     The single source of truth for the entire compliance graph.
 
-    Annotated fields use operator.add so that when multiple nodes
-    append to violations or audit_log, values accumulate rather than
-    overwrite each other. All other fields overwrite on update.
+    Annotated fields use custom reducers or operator.add so that when
+    multiple nodes append to violations, audit_log, or step_trace,
+    values accumulate rather than overwrite each other. All other fields
+    overwrite on update.
     """
 
     # --- Input ---
     input_type: str
-    # "text"         → auditing AI-generated text (emails, reports, summaries)
-    # "model_output" → auditing a prediction from an ML model
+    # "text"            → auditing AI-generated text (emails, reports, summaries)
+    # "model_output"    → auditing a prediction from an ML model
+    # "policy_document" → auditing a company policy document against 5 pillars
 
     raw_input: str
     # The original unmodified text or prediction string that entered the graph.
     # Never mutated after ingestion — used for audit trail comparison.
+
+    source_filename: Optional[str]
+    # Original filename of uploaded file. None if input was typed/pasted.
+    # e.g. "policy_document.pdf"
+
+    source_file_type: Optional[str]
+    # Detected file type from extension. None if input was typed/pasted.
+    # e.g. "pdf", "docx", "txt", "md"
 
     current_text: str
     # The working copy of the text. The self-correction node updates this
@@ -103,10 +129,10 @@ class ComplianceState(TypedDict):
     retrieved_clauses: Optional[list[dict]]      # regulatory chunks from RAG retrieval
 
     # --- Control flow ---
-    violations: Annotated[list[str], operator.add]
+    violations: Annotated[list[str], reduce_violations]
     # Accumulates violation codes as agents find problems.
-    # Uses operator.add so each agent appends without overwriting.
-    # e.g. ["PII_DETECTED", "BIAS_DISPARATE_IMPACT", "POLICY_TRANSPARENCY"]
+    # Uses reduce_violations to ensure unique codes and support clearing.
+    # e.g. ["PII_DETECTED", "BIAS_DETECTED", "POLICY_TRANSPARENCY"]
 
     active_violation: Optional[str]
     # The specific violation the self-correction node is currently fixing.
@@ -125,13 +151,27 @@ class ComplianceState(TypedDict):
     # --- Audit log ---
     audit_log: Annotated[list[dict], operator.add]
     # Every node appends a timestamped entry. Uses operator.add to accumulate.
-    # Each entry: {timestamp, node, action, result, correction_count}
+    # Each entry: {timestamp, node, action, result, detail}
     # This list is what gets persisted to SQLite via the checkpointer.
+
+    # --- Step trace ---
+    step_trace: Annotated[list[dict], operator.add]
+    # Each agent appends one entry describing its step.
+    # Uses operator.add so entries accumulate across nodes.
+    # Structure per entry:
+    # {
+    #   "step":     str,   # node name e.g. "pii_agent"
+    #   "label":    str,   # display name e.g. "PII Detection"
+    #   "status":   str,   # "pass" or "fail"
+    #   "prompt":   str | None,  # full LLM prompt text (None for non-LLM agents)
+    #   "response": dict,  # the agent's structured output
+    #   "summary":  str,   # one plain-English sentence describing the finding
+    # }
 
     # --- Output ---
     final_status: str
-    # "PASS"       → all checks passed, output is compliant
-    # "CORRECTED"  → violations found and fixed by self-correction
+    # "PASS"       → all checks passed
+    # "CORRECTED"  → violations found and successfully fixed
     # "FAIL"       → violations found, correction failed or not applicable
     # "ESCALATED"  → max_corrections reached, human review required
 
@@ -146,9 +186,20 @@ class ComplianceState(TypedDict):
     #   "continuous_monitoring": 2
     # }
 
+    suggestions: Optional[list[dict]]
+    # Output from suggestion_agent — list of per-pillar rewrite suggestions.
+    # Populated on-demand from UI, or manually updated in state via orchestration.
+
+    source_doc_type: Optional[str]
+    # "policy_document" | "text" | "model_output"
+    # Mirrors input_type but persists after graph completion for UI routing.
+
+    pillar_gaps: Optional[dict]
+    # Per-criterion gap data from policy_document audit.
+    # Structure: {criterion_id: {"level": int, "gap": str, "pillar_key": str}}
+
     escalation_reason: Optional[str]
-    # Populated if final_status == "ESCALATED". Explains why human review
-    # is needed and which violations could not be auto-corrected.
+    # Explains why human review is required and which violations could not be corrected.
 
 
 # ---------------------------------------------------------------------------
@@ -162,27 +213,20 @@ def create_initial_state(
     protected_attributes: Optional[list[str]] = None,
     prediction: Optional[float] = None,
     predicted_label: Optional[int] = None,
+    source_filename: Optional[str] = None,
+    source_file_type: Optional[str] = None,
     max_corrections: int = 3,
 ) -> ComplianceState:
     """
     Returns a fresh ComplianceState with sensible defaults.
     Call this before invoking the graph.
-
-    Example:
-        state = create_initial_state(
-            input_type="model_output",
-            raw_input="Loan application DENIED. Risk score: 0.82",
-            feature_vector={"age": 34, "income": 42000, "zip": "10001"},
-            protected_attributes=["age", "gender"],
-            prediction=0.82,
-            predicted_label=1,
-        )
-        result = app.invoke(state, config={"configurable": {"thread_id": "run-001"}})
     """
     return ComplianceState(
         # Input
         input_type=input_type,
         raw_input=raw_input,
+        source_filename=source_filename,
+        source_file_type=source_file_type,
         current_text=raw_input,
 
         # Model context
@@ -207,9 +251,15 @@ def create_initial_state(
 
         # Audit
         audit_log=[],
+        step_trace=[],
 
         # Output (set by scorecard generator)
         final_status="pending",
         rai_scores=None,
         escalation_reason=None,
+
+        # Extended fields
+        suggestions=None,
+        source_doc_type=input_type,
+        pillar_gaps=None,
     )

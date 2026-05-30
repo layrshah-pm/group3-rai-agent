@@ -27,6 +27,10 @@ _STORE_PATH = Path(__file__).parent / "policy_store"
 _COLLECTION_NAME = "policy_regulations"
 _EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
+# Clauses with cosine similarity below this threshold are not sent to the LLM.
+# Irrelevant clauses at low similarity can mislead the model more than help it.
+MIN_SIMILARITY = 0.25
+
 # Module-level singletons — initialised once on first use
 _client = None
 _collection = None
@@ -112,10 +116,14 @@ def retrieve_relevant_clauses(text: str, k: int = 5) -> list[dict]:
         metadatas = results["metadatas"][0]
         distances = results["distances"][0]
 
+        raw_count = len(documents)
         for doc, meta, dist in zip(documents, metadatas, distances):
-            # ChromaDB returns L2 distance for cosine space; convert to similarity
-            # With normalised embeddings, cosine similarity = 1 - (dist / 2)
+            # ChromaDB returns L2 distance for cosine space; convert to similarity.
+            # With normalised embeddings: cosine_similarity = 1 - (dist / 2)
             similarity = round(max(0.0, 1.0 - dist / 2.0), 4)
+
+            if similarity < MIN_SIMILARITY:
+                continue   # discard low-relevance clauses silently accumulated below threshold
 
             clauses.append({
                 "text": doc,
@@ -125,11 +133,82 @@ def retrieve_relevant_clauses(text: str, k: int = 5) -> list[dict]:
                 "similarity_score": similarity,
             })
 
+        filtered_out = raw_count - len(clauses)
+        if filtered_out > 0:
+            logger.info(
+                "[RAG] %d/%d clause(s) filtered out (similarity < %.2f).",
+                filtered_out, raw_count, MIN_SIMILARITY,
+            )
+
         return clauses
 
     except Exception as e:
         logger.warning("[RAG] Retrieval failed: %s. Returning empty.", e)
         return []
+
+
+def retrieve_clauses_for_pillar(pillar_tag: str, k: int = 5) -> list[dict]:
+    """
+    Retrieves regulatory clauses tagged for a specific RAI pillar.
+    Used by the policy document auditor to fetch grounding clauses per pillar.
+
+    pillar_tag: one of "governance", "fairness", "transparency", "robustness", "privacy"
+    Returns same dict schema as retrieve_relevant_clauses (text, regulation, article_id,
+    reference, similarity_score), plus pillar_relevance from metadata.
+    Falls back to empty list if store unavailable or pillar filter matches nothing.
+    """
+    collection = _get_collection()
+    if collection is None:
+        return []
+
+    total = collection.count()
+    if total == 0:
+        return []
+
+    try:
+        results = collection.query(
+            query_texts=[f"AI policy requirements for {pillar_tag}"],
+            n_results=min(k, total),
+            where={"pillar_relevance": {"$in": [pillar_tag, "general"]}},
+            include=["documents", "metadatas", "distances"],
+        )
+    except Exception:
+        # ChromaDB where-filter can error when no documents match the pillar tag
+        # — retry without the filter but log clearly that result quality may be degraded.
+        logger.warning(
+            "[RAG] pillar filter query failed for '%s': no documents matched the pillar tag. "
+            "Retrying without filter — results may include clauses from unrelated pillars.",
+            pillar_tag,
+        )
+        try:
+            results = collection.query(
+                query_texts=[f"AI policy requirements for {pillar_tag}"],
+                n_results=min(k, total),
+                include=["documents", "metadatas", "distances"],
+            )
+        except Exception as exc:
+            logger.warning("[RAG] retrieve_clauses_for_pillar failed entirely: %s", exc)
+            return []
+
+    clauses: list[dict] = []
+    for doc, meta, dist in zip(
+        results["documents"][0],
+        results["metadatas"][0],
+        results["distances"][0],
+    ):
+        similarity = round(max(0.0, 1.0 - dist / 2.0), 4)
+        if similarity < MIN_SIMILARITY:
+            continue
+        clauses.append({
+            "text":             doc,
+            "regulation":       meta.get("regulation", "Unknown"),
+            "article_id":       meta.get("article_id", "Unknown"),
+            "reference":        meta.get("reference", ""),
+            "pillar_relevance": meta.get("pillar_relevance", "general"),
+            "similarity_score": similarity,
+        })
+
+    return clauses
 
 
 def is_store_ready() -> bool:

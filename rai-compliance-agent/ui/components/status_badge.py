@@ -1,21 +1,17 @@
 """
 ui/components/status_badge.py
 ------------------------------
-Pass/Fail/Corrected/Escalated status badge HTML.
+Pass/Fail status badge HTML.
 """
 
 STATUS_COLOURS = {
-    "PASS":      "#28a745",
-    "CORRECTED": "#ffc107",
-    "FAIL":      "#dc3545",
-    "ESCALATED": "#8B0000",
+    "PASS": "#28a745",
+    "FAIL": "#dc3545",
 }
 
 STATUS_TEXT_COLOURS = {
-    "PASS":      "#ffffff",
-    "CORRECTED": "#000000",
-    "FAIL":      "#ffffff",
-    "ESCALATED": "#ffffff",
+    "PASS": "#ffffff",
+    "FAIL": "#ffffff",
 }
 
 
@@ -24,7 +20,7 @@ def render_status_badge(status: str) -> str:
     Returns an HTML string for a coloured status badge.
 
     Args:
-        status: one of "PASS", "CORRECTED", "FAIL", "ESCALATED"
+        status: one of "PASS", "FAIL"
 
     Returns:
         HTML string — render with st.markdown(..., unsafe_allow_html=True)

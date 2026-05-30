@@ -6,9 +6,9 @@ Entry point for the RAI Compliance Agent.
 Four demo scenarios covering the five RAI pillars:
 
   Scenario 1 — Clean input    : PASS  (all criteria met)
-  Scenario 2 — PII leakage    : CORRECTED (Presidio redaction)
-  Scenario 3 — Biased model   : CORRECTED or FAIL (Fairlearn violation)
-  Scenario 4 — COMPAS racial  : ESCALATED (racial bias via proxy features)
+  Scenario 2 — PII leakage    : FAIL  (PII detected, no auto-correction)
+  Scenario 3 — Biased model   : FAIL  (Fairlearn bias violation)
+  Scenario 4 — COMPAS racial  : FAIL  (racial bias via proxy features)
 
 Run with:
   python3.11 main.py
@@ -33,6 +33,7 @@ def run_scenario(name: str, state: dict) -> dict:
     print(f"\n[RESULT] final_status = {result['final_status']}")
     print(f"[RESULT] violations   = {list(set(result['violations']))}")
     print(f"[RESULT] audit events = {len(result['audit_log'])}")
+    print(f"[RESULT] steps traced = {len(result.get('step_trace', []))}")
     return result
 
 
@@ -67,9 +68,9 @@ scenario_1 = create_initial_state(
 )
 
 # ---------------------------------------------------------------------------
-# Scenario 2 — PII leakage (Expected: CORRECTED)
+# Scenario 2 — PII leakage (Expected: FAIL)
 # Contains: PERSON, EMAIL_ADDRESS, PHONE_NUMBER
-# Presidio detects and redacts; correction_node uses redacted_text directly.
+# Presidio detects PII — no auto-correction in linear graph.
 # ---------------------------------------------------------------------------
 scenario_2 = create_initial_state(
     input_type="text",
@@ -81,9 +82,9 @@ scenario_2 = create_initial_state(
 )
 
 # ---------------------------------------------------------------------------
-# Scenario 3 — Biased model output (Expected: ESCALATED)
+# Scenario 3 — Biased model output (Expected: FAIL)
 # Protected attribute: sex (male/female in test set). DI ratio ~0.32.
-# Bias agent fires; correction rewrites text but cannot fix model weights → ESCALATED.
+# Bias agent fires. No auto-correction in linear graph.
 # ---------------------------------------------------------------------------
 scenario_3 = create_initial_state(
     input_type="model_output",
@@ -102,7 +103,7 @@ scenario_3 = create_initial_state(
 
 
 # ---------------------------------------------------------------------------
-# Scenario 4 — COMPAS Racial Bias (Expected: ESCALATED)
+# Scenario 4 — COMPAS Racial Bias (Expected: FAIL)
 # Protected attribute: race (African-American vs Caucasian).
 # Model trained without race feature but DI ratio ≈ 0.55–0.65 due to proxies.
 # Demonstrates: racial bias can persist even without explicit race feature.

@@ -96,7 +96,6 @@ def get_runs_summary() -> list[dict]:
             "timestamp": timestamp,
             "total_score": sum(rai_scores.values()) if rai_scores else None,
             "violations": list(set(cv.get("violations", []))),
-            "correction_count": cv.get("correction_count", 0),
         })
 
     return summaries

@@ -1,0 +1,105 @@
+NORTHGATE FINANCIAL SERVICES LTD.
+MODEL RISK AND AI GOVERNANCE POLICY
+Document Ref: RISK-AI-001 | Version 3.0
+Effective Date: 01 January 2025
+Approved: Board Risk & Compliance Committee
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. SCOPE AND PURPOSE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This Policy governs the development, validation, deployment, monitoring, and retirement of all AI and ML models used by Northgate Financial Services Ltd. in credit decisioning, fraud detection, customer risk assessment, regulatory reporting, and operational management. It applies to models built internally and procured from third-party vendors.
+
+This Policy is aligned with the Reserve Bank of India Model Risk Management Guidelines 2023, the Digital Personal Data Protection Act 2023, the EU AI Act (2024/1689), and NIST AI RMF 1.0.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. MODEL INVENTORY AND ACCOUNTABILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1 Central Model Inventory
+The Chief Risk Officer is responsible for maintaining a Central Model Inventory listing every AI/ML model in production use. For each model, the Inventory records: model name, business purpose, risk tier, development date, deployment date, named model owner, validation status, last review date, and next scheduled review.
+
+2.2 Named Model Ownership
+Every model must have a named Model Owner — a senior manager — who is personally accountable for the model's performance, governance compliance, and alignment with this Policy throughout its operational life. The Model Owner's name and contact details are recorded in the Central Model Inventory and reported to the Model Risk Committee quarterly.
+
+2.3 Model Risk Committee
+The Model Risk Committee (MRC) comprises the Chief Risk Officer (Chair), Chief Technology Officer, Chief Compliance Officer, Chief Data Officer, and Head of Internal Audit. The MRC meets monthly, reviews all pre-deployment EIAs for Tier 1 and Tier 2 models, approves retirement decisions, and reports quarterly to the Board Risk Committee.
+
+2.4 Human Override
+For all models that produce credit decisions, fraud flags, or customer risk scores, a defined human review pathway must exist. Relationship managers and credit officers must be able to view, question, and override any model recommendation. Overrides are logged in the core banking system with a documented justification within the business day.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. FAIRNESS AND BIAS GOVERNANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3.1 Pre-Deployment Bias Assessment
+Before any Tier 1 or Tier 2 model is deployed, the Model Owner must document in the Model Risk Assessment: the demographic composition of the training dataset, any known historical biases in the outcome variable (e.g. prior lending decisions may reflect historical discrimination), and groups that are underrepresented in the training data.
+
+3.2 Proxy Variable Review
+The data science team must assess every input variable for potential proxy effects before model deployment. Variables correlated with gender, religion, caste, or regional origin must be flagged. The MRC must explicitly approve any model that includes proxy-correlated variables, with documented justification.
+
+3.3 Fairness Metrics
+The following fairness metrics are mandatory for all Tier 1 credit and risk models, computed on a held-out test set before deployment and included in the Model Risk Assessment sign-off: Demographic Parity Difference (pass threshold: ≤ 0.10), Equalized Odds Difference (pass threshold: ≤ 0.10), and Disparate Impact Ratio (pass threshold: ≥ 0.80). Models failing any threshold require MRC approval and a documented remediation plan before deployment.
+
+3.4 Post-Deployment Fairness Monitoring
+Fairness metrics are recomputed quarterly using live model outputs. Results are reviewed by the Model Owner and reported to the MRC. A deterioration of more than 20% against any threshold triggers a mandatory model review within 30 days.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. TRANSPARENCY AND CUSTOMER DISCLOSURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4.1 Disclosure at Point of Decision
+Any customer whose credit application, loan, or account status is materially affected by a model's output must be informed that AI was used in the decision. This disclosure is made in the decision letter or notification, in plain English, identifying Northgate as the responsible entity.
+
+4.2 Right to Explanation
+Any customer who receives an adverse credit decision influenced by an AI model may request a written explanation within 30 days of the decision. The explanation will state, in plain language, the primary factors contributing to the decision and what the customer could do differently. Explanations must describe genuinely achievable changes. This satisfies the requirements of DPDPA 2023 Section 11 and EU AI Act Article 13.
+
+4.3 Model Documentation
+Every model in the Central Model Inventory must have a Model Risk Assessment document — updated at each annual review — covering: model purpose, methodology, training data description, performance metrics disaggregated by customer segment, known limitations, fairness assessment results, and approval history.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. ONGOING MONITORING AND INCIDENT RESPONSE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5.1 Performance Monitoring
+Each model's performance is monitored against the stability and performance thresholds defined in its Model Risk Assessment. The Model Owner reviews performance metrics monthly. If any threshold is breached, the Model Owner initiates a formal review within 10 business days.
+
+5.2 Model Drift Detection
+The data science team monitors all Tier 1 models for population stability index (PSI) and characteristic stability index (CSI) monthly. A PSI exceeding 0.25 on any key input variable triggers an automatic escalation to the Model Owner and MRC Chair.
+
+5.3 Annual Model Validation
+Every Tier 1 and Tier 2 model must undergo independent validation — conducted by the Internal Audit team or an approved external party — on an annual basis. Independent validation is defined as validation conducted by personnel who had no involvement in the model's development.
+
+5.4 Incident Response
+In the event of a model producing harmful, discriminatory, or materially incorrect outputs: (a) Model Owner notified immediately; (b) MRC Chair notified within 4 hours; (c) model suspended pending assessment within 8 hours if harm is confirmed; (d) affected customers informed within 48 hours; (e) root cause report submitted to MRC within 15 business days; (f) personal data breaches reported to Data Protection Board within 72 hours per DPDPA 2023.
+
+5.5 Decommissioning
+Model retirement requires MRC approval. Before decommissioning, the Model Owner must confirm that all regulatory obligations attached to the model's outputs have been discharged, that data retention requirements are met, and that a successor model or process is in place.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. PRIVACY AND DATA STEWARDSHIP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+6.1 Consent for AI Training Data
+Before customer data is used to train a new model or retrain an existing one, the Model Owner must confirm in the Model Risk Assessment that the consent collected from customers covers model training as a specific purpose. Where consent does not extend to model training, fresh consent must be obtained or an alternative lawful basis identified and documented before training proceeds. This applies to historical customer data as well as current data.
+
+6.2 Purpose Limitation
+The Model Risk Assessment must specify the precise purpose for which customer data is used in the model. Use of the data for any purpose beyond that specified requires a fresh assessment and, where personal data is involved, fresh consent or documented lawful basis per DPDPA 2023 Section 4 and Section 6.
+
+6.3 Data Lineage
+Every model must have a documented data lineage record: source datasets, transformation steps, approval records, and consent basis for each data source. Records are maintained for the model's operational life plus seven years, consistent with DPDP Rules 2025.
+
+6.4 Vendor Assessment
+No third-party AI model or scoring service may be deployed without a completed Vendor Model Assessment confirming: the model's methodology and training data sources, the vendor's data handling and retention practices, and compliance with DPDPA 2023. Vendors must contractually commit not to use customer data provided by Northgate for their own model training.
+
+6.5 Grievance Mechanism
+A dedicated Model Complaints process is available through the customer service portal and branch network. Complaints are acknowledged within 24 hours and resolved within 21 days. The MRC reviews complaint trends quarterly.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. REGULATORY COMPLIANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This Policy implements the requirements of RBI Model Risk Management Guidelines 2023 (Sections 3.2, 4.1, 7, 8), DPDPA 2023 (Sections 4, 6, 8, 11, 13), EU AI Act Articles 9, 10, 13, 14, 17, 25, and 72, and NIST AI RMF 1.0 GOVERN and MANAGE functions. Compliance is assessed annually by Internal Audit and reported to the Board.
+
+Approved: Board Risk & Compliance Committee
+Date: 01 January 2025

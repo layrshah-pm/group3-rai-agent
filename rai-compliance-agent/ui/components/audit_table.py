@@ -26,7 +26,6 @@ def render_audit_table(audit_log: list[dict]) -> None:
             "Node": entry.get("node", ""),
             "Action": entry.get("action", ""),
             "Result": entry.get("result", ""),
-            "Correction #": entry.get("correction_count", 0),
         })
 
     df = pd.DataFrame(rows)

@@ -122,7 +122,6 @@ def test_audit_log_entry_appended():
     assert entry["node"] == "pii_agent"
     assert entry["action"] == "PII_SCAN"
     assert "timestamp" in entry
-    assert "correction_count" in entry
 
 
 def test_violations_empty_when_no_pii():

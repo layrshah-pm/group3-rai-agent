@@ -1,0 +1,67 @@
+APEX MANUFACTURING SOLUTIONS LTD.
+ARTIFICIAL INTELLIGENCE USE POLICY
+Version 1.0 | Issued: June 2024
+Approved by: IT Director
+
+1. INTRODUCTION
+
+Apex Manufacturing Solutions recognises the growing importance of Artificial Intelligence in modern manufacturing operations. This policy outlines our commitment to using AI tools responsibly across our facilities and business functions.
+
+AI technologies are being adopted across our operations including production scheduling, quality inspection, attendance management, and supplier evaluation. We believe AI can help us improve efficiency and competitiveness.
+
+2. OUR AI VALUES
+
+Apex is committed to the following principles when using AI:
+
+- We believe AI should be used fairly and without discrimination.
+- We are committed to being transparent about how we use technology.
+- We respect the privacy of our employees, customers and partners.
+- We take accountability seriously and expect our teams to use AI responsibly.
+- We support innovation while managing risks appropriately.
+
+These values guide our approach to AI adoption and will be updated as our understanding develops.
+
+3. APPROVED USES OF AI
+
+The following AI applications are currently approved for use at Apex:
+
+- Production line quality inspection systems
+- Predictive maintenance for equipment
+- Workforce scheduling and shift planning tools
+- Performance monitoring dashboards
+- Supplier scoring and evaluation platforms
+- Customer demand forecasting
+
+Employees wishing to use AI tools not on this list must obtain approval from their department manager and the IT Director.
+
+4. PROHIBITED USES
+
+The following are not permitted:
+
+- Using AI to make final employment decisions without any human involvement
+- Sharing confidential company data with public AI tools such as consumer chatbots
+- Using AI systems that have not been approved by the IT department
+
+5. EMPLOYEE RESPONSIBILITIES
+
+All employees who use AI tools are expected to:
+
+- Use approved tools only
+- Not share confidential or personal information with AI systems unless authorised
+- Report any concerns about AI outputs to their line manager
+- Complete the mandatory AI awareness training module on the learning portal
+
+6. VENDOR MANAGEMENT
+
+When procuring AI tools from third-party vendors, the procurement team should review the vendor's privacy policy to ensure data is handled appropriately. Contracts with AI vendors should include appropriate data protection clauses.
+
+7. DATA PRIVACY
+
+We take data privacy seriously. All AI systems used at Apex must comply with applicable privacy laws. Employees should not enter personal data into AI tools unless this is required for their job function and the tool has been approved by IT.
+
+8. REVIEW AND UPDATES
+
+This policy will be reviewed periodically by the IT Director. Employees with questions should contact the IT helpdesk.
+
+Issued by: IT Director, Apex Manufacturing Solutions Ltd.
+June 2024

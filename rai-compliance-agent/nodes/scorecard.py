@@ -6,22 +6,22 @@ Scorecard Generator — terminal node of the compliance graph.
 Responsibilities:
   - Aggregate results from all auditor agents
   - Compute per-pillar RAI scores (0-3 maturity scale)
-  - Set final_status based on violations and correction history
-  - Write the final audit log entry
+  - Set final_status: PASS or FAIL
+  - Write the final audit log entry and step_trace entry
   - Print a human-readable summary to console
 
 Scoring rubric (per pillar, 0-3):
-  3 — Fully compliant, no violations, best practices evident
-  2 — Mostly compliant, minor gaps or informational findings
-  1 — Partial compliance, violations found but auto-corrected
-  0 — Non-compliant, uncorrected violations present
+  3 — Fully compliant, no violations
+  2 — Mostly compliant, minor gaps
+  1 — Partial compliance, violations found
+  0 — Non-compliant, multiple violations
 
 Pillar → Agent mapping:
   Strategic Alignment    → policy_result (accountability, oversight criteria)
   Data Governance        → bias_result + pii_result
   Model Governance       → bias_result + explainability_result
   Org Oversight          → policy_result (human oversight, accountability)
-  Continuous Monitoring  → policy_result (robustness) + correction history
+  Continuous Monitoring  → policy_result (robustness)
 """
 
 from datetime import datetime, timezone
@@ -36,23 +36,19 @@ def scorecard_node(state: ComplianceState) -> dict:
     print(f"\n[SCORECARD] Computing final RAI scores...")
 
     violations = state.get("violations", [])
-    correction_count = state.get("correction_count", 0)
-    pii = state.get("pii_result")
-    bias = state.get("bias_result")
-    policy = state.get("policy_result")
-
-    # --- Determine final status ---
-    if not violations:
-        final_status = "PASS"
-    elif correction_count > 0 and _all_corrected(state):
-        final_status = "CORRECTED"
-    elif correction_count >= state.get("max_corrections", 3):
-        final_status = "ESCALATED"
-    else:
-        final_status = "FAIL"
 
     # --- Compute per-pillar scores ---
-    rai_scores = _compute_pillar_scores(state, violations)
+    if state.get("input_type") == "policy_document":
+        rai_scores = _compute_pillar_scores_policy_document(state)
+    else:
+        rai_scores = _compute_pillar_scores(state, violations)
+
+    # --- Determine final status ---
+    low_pillars = [k for k, v in rai_scores.items() if v < 2]
+    if low_pillars or sum(rai_scores.values()) < 10:
+        final_status = "FAIL"
+    else:
+        final_status = "PASS"
 
     # --- Final audit entry ---
     log_entry = {
@@ -62,34 +58,40 @@ def scorecard_node(state: ComplianceState) -> dict:
         "result": final_status,
         "detail": {
             "total_violations": len(violations),
-            "correction_count": correction_count,
             "rai_scores": rai_scores,
             "overall_score": sum(rai_scores.values()),
-            "max_possible_score": 15,   # 5 pillars x 3 max
+            "max_possible_score": 15,
         },
-        "correction_count": correction_count,
+    }
+
+    step_entry = {
+        "step":  "scorecard",
+        "label": "Scorecard",
+        "status": final_status.lower(),
+        "prompt": None,
+        "response": {
+            "final_status": final_status,
+            "rai_scores": rai_scores,
+            "overall_score": sum(rai_scores.values()),
+            "max_possible": 15,
+            "violations_total": len(violations),
+        },
+        "summary": (
+            f"Final: {final_status}. Overall score {sum(rai_scores.values())}/15. "
+            f"{len(violations)} violation(s) found."
+        ),
     }
 
     # --- Print summary ---
-    _print_summary(final_status, violations, rai_scores, correction_count)
+    _print_summary(final_status, violations, rai_scores)
 
     return {
         "final_status": final_status,
         "rai_scores": rai_scores,
         "current_node": "scorecard",
         "audit_log": [log_entry],
+        "step_trace": [step_entry],
     }
-
-
-def _all_corrected(state: ComplianceState) -> bool:
-    """
-    Returns True if all agents passed AFTER correction cycles ran.
-    Checks the latest agent results (which reflect corrected text).
-    """
-    pii_ok = (state.get("pii_result") or {}).get("passed", True)
-    bias_ok = (state.get("bias_result") or {}).get("passed", True)
-    policy_ok = (state.get("policy_result") or {}).get("passed", True)
-    return pii_ok and bias_ok and policy_ok
 
 
 def _compute_pillar_scores(state: ComplianceState, violations: list) -> dict:
@@ -100,12 +102,10 @@ def _compute_pillar_scores(state: ComplianceState, violations: list) -> dict:
     pii = state.get("pii_result") or {}
     bias = state.get("bias_result") or {}
     policy = state.get("policy_result") or {}
-    correction_count = state.get("correction_count", 0)
 
     policy_violations = {v["id"] for v in (policy.get("violations") or [])}
 
     # --- Strategic Alignment ---
-    # Checks: accountability, human oversight defined in policy
     strategic = 3
     if "ACCOUNTABILITY" in policy_violations:
         strategic -= 2
@@ -114,7 +114,6 @@ def _compute_pillar_scores(state: ComplianceState, violations: list) -> dict:
     strategic = max(0, strategic)
 
     # --- Data Governance ---
-    # Checks: PII protection, bias in data
     data_governance = 3
     if not pii.get("passed", True):
         data_governance -= 2
@@ -123,7 +122,6 @@ def _compute_pillar_scores(state: ComplianceState, violations: list) -> dict:
     data_governance = max(0, data_governance)
 
     # --- Model Governance ---
-    # Checks: bias metrics, explainability, transparency
     model_governance = 3
     if not bias.get("passed", True):
         model_governance -= 1
@@ -131,7 +129,6 @@ def _compute_pillar_scores(state: ComplianceState, violations: list) -> dict:
         model_governance -= 1
     if "EXPLAINABILITY" in policy_violations:
         model_governance -= 1
-    # EU AI Act Article 13: model outputs require meaningful explanation
     explainability = state.get("explainability_result") or {}
     if state["input_type"] == "model_output":
         if not explainability.get("top_features"):
@@ -139,7 +136,6 @@ def _compute_pillar_scores(state: ComplianceState, violations: list) -> dict:
     model_governance = max(0, model_governance)
 
     # --- Org Oversight ---
-    # Checks: human oversight, accountability structure
     org_oversight = 3
     if "HUMAN_OVERSIGHT" in policy_violations:
         org_oversight -= 2
@@ -148,13 +144,8 @@ def _compute_pillar_scores(state: ComplianceState, violations: list) -> dict:
     org_oversight = max(0, org_oversight)
 
     # --- Continuous Monitoring ---
-    # Checks: robustness disclosure, correction history (proxy for monitoring)
     continuous_monitoring = 3
     if "ROBUSTNESS" in policy_violations:
-        continuous_monitoring -= 1
-    if correction_count >= 2:
-        continuous_monitoring -= 1   # needed multiple corrections = monitoring gap
-    if correction_count >= state.get("max_corrections", 3):
         continuous_monitoring -= 1
     continuous_monitoring = max(0, continuous_monitoring)
 
@@ -167,11 +158,34 @@ def _compute_pillar_scores(state: ComplianceState, violations: list) -> dict:
     }
 
 
+def _compute_pillar_scores_policy_document(state: ComplianceState) -> dict:
+    """
+    For policy_document mode: maps the 5 criterion compliance levels directly
+    to the 5 RAI pillar keys. Level 0-3 from LLM becomes the pillar score.
+
+    Defaults to 0 (absent) for any criterion the LLM did not score, so that
+    assessment failures are conservative rather than optimistic.
+    """
+    pillar_gaps = state.get("pillar_gaps") or {}
+    mapping = {
+        "GOVERNANCE_ACCOUNTABILITY":    "strategic_alignment",
+        "FAIRNESS_BIAS":                "model_governance",
+        "TRANSPARENCY_EXPLAINABILITY":  "org_oversight",
+        "ROBUSTNESS_MONITORING":        "continuous_monitoring",
+        "PRIVACY_DATA_STEWARDSHIP":     "data_governance",
+    }
+    scores = {}
+    for criterion_id, pillar_key in mapping.items():
+        gap_data = pillar_gaps.get(criterion_id, {})
+        # Default 0: an unassessed pillar must not pass by default
+        scores[pillar_key] = gap_data.get("level", 0)
+    return scores
+
+
 def _print_summary(
     final_status: str,
     violations: list,
     rai_scores: dict,
-    correction_count: int,
 ) -> None:
     """Prints a formatted compliance summary to the console."""
     divider = "─" * 55
@@ -180,7 +194,6 @@ def _print_summary(
     print(divider)
     print(f"  Status          : {final_status}")
     print(f"  Violations found: {len(violations)}")
-    print(f"  Corrections made: {correction_count}")
     print(f"\n  PILLAR SCORES (0-3):")
     for pillar, score in rai_scores.items():
         bar = "█" * score + "░" * (3 - score)

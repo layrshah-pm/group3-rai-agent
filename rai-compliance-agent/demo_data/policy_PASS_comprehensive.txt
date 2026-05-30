@@ -1,0 +1,107 @@
+STELLARIS TECHNOLOGIES PVT. LTD.
+RESPONSIBLE AI GOVERNANCE POLICY
+Version 2.1 | Effective Date: 01 March 2025
+Approved by: Chief Executive Officer & Board Risk Committee
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. PURPOSE AND SCOPE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This Policy governs the development, procurement, deployment, and retirement of all Artificial Intelligence (AI) and Machine Learning (ML) systems operated by Stellaris Technologies Pvt. Ltd. and its subsidiaries. It applies to all employees, contractors, vendors, and third-party partners involved in AI-related activities.
+
+This Policy has been designed to comply with the Digital Personal Data Protection Act, 2023 (DPDPA), the EU Artificial Intelligence Act (2024/1689), the RBI Model Risk Management Guidelines 2023, and ISO/IEC 42001:2023.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. GOVERNANCE AND ACCOUNTABILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1 AI Ethics Committee
+The Company shall maintain an AI Ethics Committee (AEC) comprising the Chief AI Officer (Chair), Chief Risk Officer, Chief Legal Officer, Chief Human Resources Officer, and two independent external advisors with expertise in AI ethics. The Committee meets monthly and reports quarterly to the Board Risk Committee.
+
+2.2 AI System Inventory
+All AI systems deployed by the Company must be registered in the Central AI System Inventory maintained by the Chief AI Officer. Each registered system must include: system name, business purpose, risk tier classification, deployment date, named accountable owner, and review schedule. The Inventory is reviewed and updated quarterly.
+
+2.3 Named Accountability
+Every AI system classified as Tier 2 (High Risk) or Tier 3 (Medium Risk) must have a named individual — the AI System Owner — who is personally accountable for the system's governance compliance, performance monitoring, and ethical conduct throughout its operational life. The AI System Owner's name is recorded in the AI System Inventory and reported to the AEC.
+
+2.4 Human Override Protocol
+For every high-risk AI system that influences employment, credit, safety, or financial decisions, a defined human review pathway must exist before any AI recommendation is acted upon. The responsible manager must be able to view, question, and override any AI-generated recommendation. All overrides and the documented justification must be logged in the audit system within 24 hours.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. FAIRNESS AND BIAS MITIGATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3.1 Pre-Deployment Bias Assessment
+Before any Tier 2 AI system is deployed, the AI System Owner must complete a Training Data Assessment documenting: the period covered by training data, known historical biases in the data, demographic groups that may be underrepresented, and whether outcome variables were themselves products of historically biased processes.
+
+3.2 Proxy Variable Review
+For every input variable in a Tier 2 AI model, the development team must assess whether the variable could serve as a proxy for a protected characteristic including caste, gender, religion, regional origin, or disability status. Variables identified as potential proxies must be either removed or explicitly justified with documented reasoning approved by the AI Ethics Committee before deployment.
+
+3.3 Fairness Metrics and Pre-Deployment Testing
+The AI Ethics Committee shall formally select and document the fairness criterion for each Tier 2 deployment prior to go-live. At minimum, the following metrics shall be computed and included in the Ethical Impact Assessment: Demographic Parity Difference (threshold ≤ 0.1), Equalized Odds Difference (threshold ≤ 0.1), and Disparate Impact Ratio (threshold ≥ 0.8). Testing must be conducted across all relevant subgroups before deployment. Results are included in the EIA sign-off.
+
+3.4 Ongoing Fairness Monitoring
+Post-deployment, outcome distributions across demographic subgroups must be reviewed quarterly by the AI System Owner. If differential outcomes between subgroups exceed the thresholds defined in the EIA, the AI System Owner must initiate a formal review before the system continues operating.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. TRANSPARENCY AND EXPLAINABILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4.1 Disclosure Obligation
+Any person whose employment, credit, safety, or financial situation is materially affected by an AI system's output must be informed, at the time of the decision or before, that AI was used to make or influence that decision. This disclosure must be in plain language, in the individual's preferred language where reasonably practicable, and must identify the responsible business function.
+
+4.2 Counterfactual Explanation Standard
+For any adverse decision made or influenced by a Tier 2 AI system, the affected individual may request a counterfactual explanation stating what would have needed to be different for the decision to have been different. The AI System Owner must ensure such explanations are available within five business days of a written request. Explanations must describe genuinely achievable changes, not mathematically valid but practically impossible modifications.
+
+4.3 Model Cards
+Every AI system in the Inventory must have a Model Card — a living document updated at each periodic review — covering: intended use, training data sources, performance metrics disaggregated by relevant subgroups, known limitations, and fairness assessment results. Model Cards are available to the AEC, internal auditors, and upon request to affected individuals.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. ROBUSTNESS AND MONITORING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5.1 Performance Monitoring Protocol
+Every Tier 2 AI system must have formally defined performance thresholds specified in its Ethical Impact Assessment before deployment. These thresholds are governance triggers, not aspirational targets. If performance degrades below the defined threshold, the AI System Owner must initiate a formal review before the system continues to operate.
+
+5.2 Drift Detection
+All Tier 2 AI systems must be monitored for distributional drift — changes in the statistical relationship between inputs and outputs that indicate the model is operating outside the conditions it was designed for. Drift detection runs at minimum monthly. Quarterly drift reports are submitted to the AI Ethics Committee.
+
+5.3 Periodic Review Schedule
+Every Tier 2 AI system is formally reviewed at minimum annually. The review asks: Is the training data still representative of current conditions? Do fairness metrics still hold within defined thresholds? Has the human override rate changed in ways suggesting reduced model reliability? Has any regulatory or policy change rendered the current configuration non-compliant?
+
+5.4 Incident Response Playbook
+When an AI system produces a harmful or unexpected output, the Company operates under the following protocol: (a) AI System Owner is notified within 4 hours; (b) AEC Chair is notified within 8 hours; (c) system is assessed for suspension within 24 hours; (d) affected parties are informed within 48 hours; (e) root cause analysis is completed within 10 business days. Under DPDPA 2023, personal data breaches are reported to the Data Protection Board within 72 hours.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. PRIVACY AND DATA STEWARDSHIP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+6.1 Consent Review for AI Training Data
+Before any personal data is used to train an AI model, the AI System Owner must confirm in writing that the consent originally collected covers AI model training as a specific, named purpose. Consent collected for HR administration, customer onboarding, or general service delivery does not automatically cover AI model training. Where the original consent does not cover AI training, fresh consent must be obtained before training proceeds. This applies to historical data as well as newly collected data.
+
+6.2 Purpose Limitation
+The Ethical Impact Assessment must document the specific purpose for which each AI system uses personal data. Any expansion of that use requires a fresh EIA and, where personal data is involved, fresh consent. Purpose limitation is reviewed at each periodic model review and at the point of any system update.
+
+6.3 Data Lineage Documentation
+Every AI system in the Inventory must have a documented data lineage record: what data was used, where it came from, what transformations it underwent, who approved its use, and what consent authorised that use. Per DPDP Rules 2025, this record must be maintained for the operational life of the model plus seven years.
+
+6.4 Vendor AI Data Assessment
+Before any third-party AI tool is approved for use, a Vendor AI Data Assessment must be completed confirming: what data the tool receives as input, how the vendor handles that data, whether the vendor retains user input for its own model training, and whether the vendor's data handling is consistent with DPDPA 2023 obligations. No third-party AI tool that retains user input for its own model training may be approved for use with confidential or personal data.
+
+6.5 Grievance Mechanism
+The Company shall maintain an accessible grievance mechanism for individuals whose data is processed by AI systems. Grievances must be acknowledged within 24 hours and resolved within 30 days. Grievance records are reviewed quarterly by the AEC.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. ETHICAL IMPACT ASSESSMENT (EIA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+No Tier 2 AI system may be deployed without a completed and AEC-approved Ethical Impact Assessment. The EIA must be signed by the named AI System Owner and the relevant business unit head. The EIA is a living document updated at each periodic review and whenever the system undergoes material change. The completed EIA constitutes the governance record of the AI system throughout its operational life.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. ENFORCEMENT AND REVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Violations of this Policy may result in disciplinary action up to and including termination. The Policy is reviewed annually by the AEC and reconfirmed by the Board. Employees may raise concerns through the confidential ethics hotline without fear of retaliation.
+
+Approved: CEO, Chief AI Officer, Chief Legal Officer
+Date: 01 March 2025

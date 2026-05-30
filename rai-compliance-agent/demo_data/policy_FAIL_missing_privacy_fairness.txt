@@ -1,0 +1,75 @@
+MERIDIAN HR SERVICES PVT. LTD.
+AI IN HUMAN RESOURCES — USAGE AND GOVERNANCE POLICY
+Document ID: HR-POL-2024-09
+Version: 1.2 | Effective: September 2024
+Owner: Head of Human Resources
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1 — PURPOSE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This policy governs the use of AI-based tools and systems in Meridian HR Services' human resources functions, including recruitment, employee performance assessment, learning and development, and workforce planning. It defines acceptable use, roles, and oversight mechanisms.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2 — GOVERNANCE STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1 The Head of Human Resources is responsible for overseeing all AI tools used within the HR function.
+
+2.2 A quarterly HR Technology Review meeting will be held, attended by the Head of HR, the HRIS Manager, and the Chief People Officer. This meeting reviews AI tool performance, flags any concerns, and approves new tool additions.
+
+2.3 All AI tools deployed in HR processes must be approved by the Head of HR and listed in the HR Technology Register maintained by the HRIS Manager.
+
+2.4 Human reviewers must verify all AI-generated shortlists, performance assessments, and compensation recommendations before any action is taken. No employment decision may be made solely on the basis of an AI output.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3 — TRANSPARENCY TO EMPLOYEES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3.1 Employees will be notified in their employment contract and onboarding materials that Meridian uses AI tools in its HR processes, including recruitment screening, performance monitoring, and learning recommendations.
+
+3.2 Where an employee is directly affected by an AI-supported HR decision — such as shortlisting, performance grading, or learning track assignment — the relevant HR Business Partner will, upon request, explain the factors that contributed to the decision in plain language.
+
+3.3 Employees may raise concerns about any HR decision through the standard grievance procedure set out in the Employee Handbook.
+
+3.4 The HR Technology Register, including the names and purposes of all AI tools in use, will be made available to employees upon request through the HR portal.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4 — MONITORING AND REVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4.1 The HRIS Manager will review AI tool performance metrics quarterly and report findings to the HR Technology Review meeting.
+
+4.2 If any AI tool produces outputs that appear inconsistent with expected performance standards, the HR Business Partner responsible for that tool must escalate to the Head of HR within five business days.
+
+4.3 All AI tools will be subject to a formal annual review. The review will assess whether the tool continues to meet business requirements, whether vendor support is adequate, and whether any new regulatory requirements apply.
+
+4.4 Vendor contracts will include provisions requiring vendors to notify Meridian of any material changes to the AI tool's underlying model, training data, or data handling practices within 30 days.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5 — DATA HANDLING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5.1 All personal data processed by AI tools must be handled in accordance with Meridian's Data Protection Policy and applicable law.
+
+5.2 Employees must not enter sensitive personal data into AI tools that have not been approved by the HRIS team.
+
+5.3 Vendor contracts must include standard data processing agreements confirming that employee data will not be used for purposes beyond those specified.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 6 — ROLES AND RESPONSIBILITIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Head of Human Resources: Policy owner, approves all AI tool deployments, chairs HR Technology Review.
+HRIS Manager: Maintains HR Technology Register, monitors tool performance, manages vendor relationships.
+HR Business Partners: First point of contact for employee queries, escalates concerns, verifies AI outputs before action.
+All Employees: Complete AI awareness training, use only approved tools, raise concerns through grievance procedure.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 7 — POLICY REVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This policy will be reviewed annually by the Head of Human Resources. Material changes will be communicated to all employees through the HR portal and require sign-off by the Chief People Officer.
+
+Approved: Head of Human Resources, Chief People Officer
+Effective: September 2024

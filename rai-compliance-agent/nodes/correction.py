@@ -117,6 +117,34 @@ def correction_node(state: ComplianceState) -> dict:
         "correction_count": count,
     }
 
+    step_entry = {
+        "step":  "correction",
+        "label": "Self-Correction",
+        "status": "pass" if changed else "fail",
+        "prompt": None,
+        "response": {
+            "violation": violation,
+            "attempt_number": count,
+            "max_corrections": state["max_corrections"],
+            "text_changed": changed,
+        },
+        "summary": (
+            f"Attempt {count}/{state['max_corrections']}: corrected '{violation}' — text updated."
+            if changed else
+            f"Attempt {count}/{state['max_corrections']}: LLM returned unchanged text for '{violation}'."
+        ),
+    }
+
+    # If the LLM failed to change the text, surface an escalation hint.
+    # The _should_correct / _after_correction routing in graph.py will
+    # check correction_count against max_corrections to trigger escalation.
+    escalation_reason = None
+    if not changed:
+        escalation_reason = (
+            f"Correction attempt {count} produced no change for violation '{violation}'. "
+            "LLM could not improve the text further."
+        )
+
     return {
         "current_text": corrected_text,
         "correction_count": count,
@@ -126,6 +154,8 @@ def correction_node(state: ComplianceState) -> dict:
         "policy_result": None,
         "current_node": "correction",
         "audit_log": [log_entry],
+        "step_trace": [step_entry],
+        "escalation_reason": escalation_reason,
     }
 
 

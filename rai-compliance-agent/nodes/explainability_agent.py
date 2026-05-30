@@ -9,9 +9,9 @@ by absolute SHAP value with plain-English direction labels.
 
 For text mode: returns a passing stub (explainability is model-only).
 
-This agent is INFORMATIONAL — it never sets a violation or triggers
-correction. It always passes. Its output populates explainability_result
-in state, which the scorecard uses to score Model Governance.
+This agent is INFORMATIONAL — it never sets a violation.
+It always passes. Its output populates explainability_result in state,
+which the scorecard uses to score Model Governance.
 
 EU AI Act Article 13 requires that affected individuals receive a
 meaningful explanation of automated decisions. This agent operationalises
@@ -55,13 +55,29 @@ def explainability_agent_node(state: ComplianceState) -> dict:
             "top_features": [f["feature"] for f in result["top_features"][:3]],
             "explanation": result["explanation_text"][:120],
         },
-        "correction_count": state["correction_count"],
+    }
+
+    xr = result
+    summary = xr["explanation_text"] if xr["explanation_text"] else "Explainability not applicable (text mode)."
+
+    step_entry = {
+        "step":  "explainability_agent",
+        "label": "Explainability (SHAP)",
+        "status": "pass",
+        "prompt": None,
+        "response": {
+            "mode": state["input_type"],
+            "top_features": xr["top_features"],
+            "explanation_text": xr["explanation_text"],
+        },
+        "summary": summary,
     }
 
     return {
         "explainability_result": result,
         "current_node": "explainability_agent",
         "audit_log": [log_entry],
+        "step_trace": [step_entry],
     }
 
 
@@ -112,7 +128,6 @@ def _explain_model_prediction(state: ComplianceState) -> ExplainabilityResult:
 
     try:
         from sklearn.pipeline import Pipeline
-        from sklearn.base import is_classifier
         import numpy as np
 
         # Unwrap sklearn Pipeline: apply preprocessing, then SHAP the final estimator
@@ -148,7 +163,6 @@ def _explain_model_prediction(state: ComplianceState) -> ExplainabilityResult:
         if isinstance(final_estimator, TREE_TYPES):
             explainer = shap.TreeExplainer(final_estimator)
         else:
-            # Linear or other: use KernelExplainer with a small background sample
             background = shap.sample(instance, min(50, len(instance)))
             explainer = shap.KernelExplainer(
                 lambda x: final_estimator.predict_proba(x)[:, 1]
@@ -164,7 +178,6 @@ def _explain_model_prediction(state: ComplianceState) -> ExplainabilityResult:
         if isinstance(shap_values, list) and len(shap_values) == 2:
             vals = shap_values[1][0]
         elif hasattr(shap_values, "shape") and len(shap_values.shape) == 3:
-            # Some sklearn RandomForest versions return shape (n_instances, n_features, n_classes)
             vals = shap_values[0, :, 1]
         else:
             vals = shap_values[0]

@@ -22,8 +22,10 @@ def ingestion_node(state: ComplianceState) -> dict:
     Validates and normalises the incoming input.
     Returns a partial state update (only the fields this node touches).
     """
+    source = state.get("source_filename") or "direct input"
     print(f"\n[INGESTION] Starting compliance check")
     print(f"[INGESTION] Input type : {state['input_type']}")
+    print(f"[INGESTION] Source     : {source}")
     print(f"[INGESTION] Input      : {state['raw_input'][:120]}...")
 
     # --- Normalise text ---
@@ -34,10 +36,10 @@ def ingestion_node(state: ComplianceState) -> dict:
         raise ValueError("raw_input cannot be empty. Nothing to audit.")
 
     # Guard: input type must be known
-    if state["input_type"] not in ("text", "model_output"):
+    if state["input_type"] not in ("text", "model_output", "policy_document"):
         raise ValueError(
             f"Unknown input_type '{state['input_type']}'. "
-            "Must be 'text' or 'model_output'."
+            "Must be 'text', 'model_output', or 'policy_document'."
         )
 
     # --- Audit log entry ---
@@ -50,8 +52,9 @@ def ingestion_node(state: ComplianceState) -> dict:
             "input_type": state["input_type"],
             "char_count": len(normalised),
             "has_feature_vector": state.get("feature_vector") is not None,
+            "source_filename": state.get("source_filename"),
+            "source_file_type": state.get("source_file_type"),
         },
-        "correction_count": state["correction_count"],
     }
 
     print(f"[INGESTION] Normalised {len(normalised)} characters. Passing to PII agent.")

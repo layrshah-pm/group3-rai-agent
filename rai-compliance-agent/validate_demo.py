@@ -65,7 +65,7 @@ SCENARIOS = {
     },
     2: {
         "name": "PII Leakage",
-        "expected_status": {"CORRECTED", "ESCALATED"},
+        "expected_status": {"FAIL"},
         "expected_violations_include": {"PII_DETECTED"},
         "expected_violations_exclude": set(),
         "state_kwargs": {
@@ -75,7 +75,7 @@ SCENARIOS = {
     },
     3: {
         "name": "Biased Model Output",
-        "expected_status": {"CORRECTED", "ESCALATED", "FAIL"},
+        "expected_status": {"FAIL"},
         "expected_violations_include": {"BIAS_DETECTED"},
         "expected_violations_exclude": set(),
         "state_kwargs": {
@@ -89,7 +89,7 @@ SCENARIOS = {
     },
     4: {
         "name": "COMPAS Racial Bias",
-        "expected_status": {"ESCALATED", "FAIL"},
+        "expected_status": {"FAIL"},
         "expected_violations_include": {"BIAS_DETECTED"},
         "expected_violations_exclude": set(),
         "state_kwargs": {
@@ -126,8 +126,6 @@ def run_once(scenario_id: int) -> dict:
 
     fs = result["final_status"]
     violations = set(result.get("violations", []))
-    corrections = result.get("correction_count", 0)
-
     passed = (
         fs in sc["expected_status"]
         and sc["expected_violations_include"].issubset(violations)
@@ -138,7 +136,6 @@ def run_once(scenario_id: int) -> dict:
         "scenario": scenario_id,
         "final_status": fs,
         "violations": violations,
-        "corrections": corrections,
         "elapsed": elapsed,
         "passed_expectations": passed,
     }

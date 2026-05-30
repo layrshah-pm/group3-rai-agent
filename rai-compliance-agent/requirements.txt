@@ -31,6 +31,7 @@ numpy>=1.26.0
 # ── Vector DB / Embeddings (Node: policy_agent RAG) ──────────────
 chromadb>=0.5.0
 sentence-transformers>=3.0.0
+# torch is NOT a direct dependency — sentence-transformers pulls it in transitively
 
 # ── Output validation ─────────────────────────────────────────────
 pydantic>=2.0.0
@@ -42,3 +43,5 @@ plotly>=5.20.0
 # ── Utilities ────────────────────────────────────────────────────
 python-dotenv>=1.0.0          # for .env API key management
 msgpack>=1.0.0                # langgraph-checkpoint-sqlite uses msgpack serialisation
+pymupdf>=1.24.0               # PDF text extraction (file upload feature)
+python-docx>=1.1.0            # Word document text extraction (file upload feature)

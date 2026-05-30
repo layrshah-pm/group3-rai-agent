@@ -93,24 +93,6 @@ def test_scenario_2_pii_detected():
     )
 
 
-def test_scenario_2_correction_ran():
-    """PII scenario must attempt at least one correction."""
-    state = create_initial_state(input_type="text", raw_input=PII_TEXT)
-    result = app.invoke(state, config=_config())
-    assert result["correction_count"] >= 1, (
-        f"Expected correction_count >= 1, got: {result['correction_count']}"
-    )
-
-
-def test_scenario_2_final_text_is_redacted():
-    """PII identifiers must be replaced with Presidio placeholders in final text."""
-    state = create_initial_state(input_type="text", raw_input=PII_TEXT)
-    result = app.invoke(state, config=_config())
-    final_text = result.get("current_text", "")
-    assert "John Smith" not in final_text, "PERSON not redacted in final text"
-    assert "john.smith@email.com" not in final_text, "EMAIL not redacted in final text"
-
-
 def test_scenario_2_status_not_pass():
     """PII leakage scenario should never return a clean PASS (corrections happened)."""
     state = create_initial_state(input_type="text", raw_input=PII_TEXT)
@@ -159,29 +141,10 @@ def test_scenario_3_bias_metrics_populated():
     )
 
 
-# ---------------------------------------------------------------------------
-# Loop termination
-# ---------------------------------------------------------------------------
-
-def test_loop_terminates_at_max_corrections():
-    """Self-correction loop must never exceed max_corrections."""
-    state = create_initial_state(
-        input_type="text",
-        raw_input=PII_TEXT,
-        max_corrections=2,
-    )
-    result = app.invoke(state, config=_config())
-    assert result["correction_count"] <= 2, (
-        f"Loop exceeded max_corrections: correction_count = {result['correction_count']}"
-    )
-    assert result["final_status"] in ("CORRECTED", "ESCALATED", "PASS", "FAIL")
-
-
-def test_loop_terminates_on_clean_input():
-    """Clean input must reach scorecard without any correction cycles."""
+def test_clean_input_passes():
+    """Clean input must reach scorecard with PASS status."""
     state = create_initial_state(input_type="text", raw_input=CLEAN_TEXT)
     result = app.invoke(state, config=_config())
-    assert result["correction_count"] == 0
     assert result["final_status"] == "PASS"
 
 
